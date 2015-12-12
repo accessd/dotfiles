@@ -1,0 +1,546 @@
+"-------------------------------------------------------------------------------
+" My .vimrc file
+"
+" inspired by https://github.com/skwp/dotfiles
+"
+" author: Andrey Morskov < accessd >
+"-------------------------------------------------------------------------------
+
+"===============================================================================
+" Vundle Manager configuration
+"===============================================================================
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+"===============================================================================
+" Enabled plugins
+"===============================================================================
+
+" Colorscheme
+Plugin 'https://github.com/freeo/vim-kalisi'
+Plugin 'bling/vim-airline'
+
+" Fuzzy file, buffer, mru, tag finder
+Plugin 'kien/ctrlp.vim'
+
+" BufExplorer
+Plugin 'jlanzarotta/bufexplorer'
+
+" Ruby Enhancements
+Plugin 'vim-ruby/vim-ruby'
+
+" Rails Enhancements
+Plugin 'tpope/vim-rails'
+
+" RSpec
+Plugin 'Keithbsmiley/rspec.vim'
+Plugin 'thoughtbot/vim-rspec'
+
+" PHP
+Plugin '2072/PHP-Indenting-for-VIm'
+Plugin 'StanAngeloff/php.vim'
+
+" Elixir
+Plugin 'elixir-lang/vim-elixir'
+
+" Markdown Enhancements
+Plugin 'plasticboy/vim-markdown'
+
+" Ctags generation
+Plugin 'szw/vim-tags'
+
+" Track UltiSnips (the engine)
+let g:loaded_python3_provider = 0
+Plugin 'SirVer/ultisnips'
+let g:loaded_python3_provider = 1
+
+" Snippets are separated from the engine
+Plugin 'honza/vim-snippets'
+
+" Seamless navigation between tmux panes and vim splits
+Plugin 'christoomey/vim-tmux-navigator'
+
+" NerdTree
+Plugin 'jistr/vim-nerdtree-tabs.git'
+Plugin 'scrooloose/nerdtree.git'
+
+" Moving and searching
+Plugin 'justinmk/vim-sneak'
+Plugin 'rking/ag.vim'
+Plugin 'vim-scripts/IndexedSearch'
+Plugin 'nelstrom/vim-visual-star-search'
+Plugin 'skwp/greplace.vim'
+
+" Comments
+Plugin 'tomtom/tcomment_vim.git'
+
+" Autocomplete
+Plugin 'Valloric/YouCompleteMe'
+
+" GIT
+Plugin 'airblade/vim-gitgutter'
+Plugin 'kablamo/vim-git-log'
+
+Plugin 'sjl/tslime.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'tpope/vim-fugitive'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-repeat'
+
+" Finish requiring Vundle plugins
+call vundle#end()
+
+" Enable filetype detection and filetype-specific indenting & plugins.
+filetype plugin indent on
+
+" Enable syntax highlighting
+syntax on
+
+"===============================================================================
+" General editing configurations
+"===============================================================================
+
+" Set map leader
+let mapleader = ','
+let g:mapleader = ','
+
+set number
+set history=700
+set mousehide
+set nowrap
+set textwidth=79
+set tabstop=2             " tab size
+set backspace=2           " make backspace work
+set list                  " show hidden chars
+set listchars=trail:.     " hidden caracthers and how to show them
+set shiftwidth=2          " number of spaces to insert when autoindenting
+set sta
+set softtabstop=0         " disable softtabstop feature
+set sr
+set expandtab
+set autowriteall
+set nonumber
+set showmode
+set ruler                 " show column numbers
+set nostartofline         " keep column when scrolling with <C-f>, <C-b>
+set noautoindent          " indent from last line when starting new line
+set incsearch             " find the next match as we type the search"
+set hlsearch              " hilight searches by default
+set ignorecase				    "	ignore case when searching...
+set smartcase					    "	...unless we type a capital
+set noignorecase
+set wildmode=list:longest " bash-like completion
+set encoding=utf-8
+set exrc                  " enable per-directory .vimrc files
+set secure                " disable unsafe commands in local .vimrc files
+set mousemodel=popup
+set laststatus=2
+set clipboard=unnamed
+set timeoutlen=1000 ttimeoutlen=0
+set colorcolumn=120
+set listchars=tab:\ \ ,eol:\ "
+
+"-------------------------------------------------------------------------------
+" Syntax
+"-------------------------------------------------------------------------------
+autocmd BufNewFile,BufRead *.ini silent! set syntax=cfg
+
+" by default, the indent is 2 spaces but ...
+" for php 4 spaces
+autocmd Filetype php setlocal ts=4 sw=4 expandtab
+" for js/coffee/jade files, 4 spaces
+autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab
+autocmd Filetype coffeescript setlocal ts=4 sw=4 sts=0 expandtab
+autocmd Filetype jade setlocal ts=4 sw=4 sts=0 expandtab
+
+"-------------------------------------------------------------------------------
+" no backup
+"-------------------------------------------------------------------------------
+set nobackup
+set nowb
+set noswapfile
+
+"-------------------------------------------------------------------------------
+" bufexplorer
+"-------------------------------------------------------------------------------
+map ,e :BufExplorer<CR>
+map ,s :BufExplorerHorizontalSplit<CR>
+map ,v :BufExplorerVerticalSplit<CR>
+
+"-------------------------------------------------------------------------------
+" misc maps
+"-------------------------------------------------------------------------------
+nmap <S-Enter> O<Esc>
+nmap <CR> o<Esc>
+map ,r :e %<CR>                   " reload file
+map Q :bd<CR>                     " close buffer
+map ,s :w<CR>										  " save file
+map ,c :retab<CR> :%s/  *$//<CR>  " clean tabs and spaces at end of line
+map ,n j0f"lct"
+map <leader>x :tabn<cr>         " Select tab to the right using k"
+map <leader>z :tabp<cr>         " Select tab to the left using j"
+" RSpec
+let g:rspec_command = "!bundle exec rspec {spec}"
+map <Leader>rs :call RunCurrentSpecFile()<CR>
+map <Leader>rl :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+
+" alias yw to yank the entire word 'yank inner word'
+" even if the cursor is halfway inside the word
+nnoremap ,yw yiww
+" ,ow = 'overwrite word', replace a word with what's in the yank buffer
+nnoremap ,ow "_diwhp
+
+" ,# Surround a word with #{ruby interpolation}
+map ,# ysiw#
+vmap ,# c#{<C-R>"}<ESC>
+
+" ," Surround a word with "quotes"
+map ," ysiw"
+vmap ," c"<C-R>""<ESC>
+
+" ,' Surround a word with 'single quotes'
+map ,' ysiw'
+vmap ,' c'<C-R>"'<ESC>
+
+" ,) or ,( Surround a word with (parens)
+" The difference is in whether a space is put in
+map ,( ysiw(
+map ,) ysiw)
+vmap ,( c( <C-R>" )<ESC>
+vmap ,) c(<C-R>")<ESC>
+
+" ,[ Surround a word with [brackets]
+map ,] ysiw]
+map ,[ ysiw[
+vmap ,[ c[ <C-R>" ]<ESC>
+vmap ,] c[<C-R>"]<ESC>
+
+" ,{ Surround a word with {braces}
+map ,} ysiw}
+map ,{ ysiw{
+vmap ,} c{ <C-R>" }<ESC>
+vmap ,{ c{<C-R>"}<ESC>
+
+map ,` ysiw`
+
+" ,q to toggle quickfix window (where you have stuff like Ag)
+" ,oq to open it back up (rare)
+nmap <silent> ,qc :cclose<CR>
+nmap <silent> ,qo :copen<CR>
+
+" Create window splits easier. The default
+" way is Ctrl-w,v and Ctrl-w,s. I remap
+" this to vv and ss
+nnoremap <silent> vv <C-w>v
+nnoremap <silent> ss <C-w>s
+
+"Clear current search highlight by double tapping //
+nmap <silent> // :nohlsearch<CR>
+
+" Change inside various enclosures with Ctrl-" and Ctrl-'
+" The f makes it find the enclosure so you don't have
+" to be standing inside it
+nnoremap <C-'> f'ci'
+nnoremap <C-"> f"ci"
+nnoremap <C-(> f(ci(
+nnoremap <C-)> f)ci)
+nnoremap <C-[> f[ci[
+nnoremap <C-]> f]ci]
+
+" Command-/ to toggle comments
+map <C-/> :TComment<CR>
+imap <C-/> <Esc>:TComment<CR>i
+
+" Use Leader- numbers to pick the tab you want
+map <silent> <leader>1 :tabn 1<cr>
+map <silent> <leader>2 :tabn 2<cr>
+map <silent> <leader>3 :tabn 3<cr>
+map <silent> <leader>4 :tabn 4<cr>
+map <silent> <leader>5 :tabn 5<cr>
+map <silent> <leader>6 :tabn 6<cr>
+map <silent> <leader>7 :tabn 7<cr>
+map <silent> <leader>8 :tabn 8<cr>
+map <silent> <leader>9 :tabn 9<cr>
+
+" Turn off default key mappings
+let g:multi_cursor_use_default_mapping=0
+
+" Switch to multicursor mode with ,mc
+let g:multi_cursor_start_key=',mc'
+
+" Ctrl-n, Ctrl-p, Ctrl-x, and <Esc> are mapped in the special multicursor
+" mode once you've added at least one virtual cursor to the buffer
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
+imap ^H <Left><Del>
+
+function! s:ChangeSurrounding(movement)
+  " define 'surrounding' opening characters that we want to be able to change
+  let surrounding_beginnings = ['{', '(', '"', '>', '[', "'", '`']
+  let cursor_position = col('.')
+  let line = getline('.')
+  " nasty hack to omit single appostrophy matching
+  if (count(split(line, '\zs'), "'") < 2)
+    let l = remove(surrounding_beginnings, index(surrounding_beginnings, "'"))
+  endif
+  " walk the line backwards looking for the innermost 'surrounding' opening character
+  while cursor_position > 0
+    let char = line[cursor_position-1]
+    let matched_beginning_index = index(surrounding_beginnings, char)
+    if matched_beginning_index > -1
+      if '>' == char
+        " vim already understands HTML and XML tags so use that
+        execute "normal! c" . a:movement . "t"
+      else
+        " change (inside) the 'surrounding' we found
+        execute "normal! c" . a:movement . char
+      endif
+      " move one char right of that opening character
+      execute "normal! l"
+      " go into insert mode (statinsert! positioned the cursor after the
+      " surrounding entirely)
+      startinsert
+      return
+    endif
+    let cursor_position -= 1
+  endwhile
+endfunction
+
+command! ChangeInsideSurrounding :call <sid>ChangeSurrounding("i")
+command! ChangeAroundSurrounding :call <sid>ChangeSurrounding("a")
+
+if !hasmapto(':ChangeInsideSurrounding<CR>')
+  nmap <script> <silent> <unique> <Leader>ci :ChangeInsideSurrounding<CR>
+endif
+
+if !hasmapto(':ChangeAroundSurrounding<CR>')
+  nmap <script> <silent> <unique> <Leader>cas :ChangeAroundSurrounding<CR>
+endif
+
+" ================ Persistent Undo ==================
+" Keep undo history across sessions, by storing in file.
+" Only works all the time.
+if has('persistent_undo')
+  silent !mkdir ~/.vim/backups > /dev/null 2>&1
+  set undodir=~/.vim/backups
+  set undofile
+endif
+
+" upper/lower word
+nmap <leader>cru mQviwU`Q
+nmap <leader>crs mQviwu`Q
+
+nmap <C-\> :NERDTreeFind<CR>
+nmap <silent> <leader><leader> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
+
+" Automatically removing all trailing whitespace
+autocmd BufWritePre * :%s/\s\+$//e
+
+au BufRead,BufNewFile {Vagrantfile,Gemfile,Capfile} set ft=ruby
+:imap jj <Esc>l
+
+" Delete buffer while keeping window layout (don't close buffer's windows).
+" Version 2008-11-18 from http://vim.wikia.com/wiki/VimTip165
+if v:version < 700 || exists('loaded_bclose') || &cp
+  finish
+endif
+let loaded_bclose = 1
+if !exists('bclose_multiple')
+  let bclose_multiple = 1
+endif
+
+" Display an error message.
+function! s:Warn(msg)
+  echohl ErrorMsg
+  echomsg a:msg
+  echohl NONE
+endfunction
+
+" Command ':Bclose' executes ':bd' to delete buffer in current window.
+" The window will show the alternate buffer (Ctrl-^) if it exists,
+" or the previous buffer (:bp), or a blank buffer if no previous.
+" Command ':Bclose!' is the same, but executes ':bd!' (discard changes).
+" An optional argument can specify which buffer to close (name or number).
+function! s:Bclose(bang, buffer)
+  if empty(a:buffer)
+    let btarget = bufnr('%')
+  elseif a:buffer =~ '^\d\+$'
+    let btarget = bufnr(str2nr(a:buffer))
+  else
+    let btarget = bufnr(a:buffer)
+  endif
+  if btarget < 0
+    call s:Warn('No matching buffer for '.a:buffer)
+    return
+  endif
+  if empty(a:bang) && getbufvar(btarget, '&modified')
+    call s:Warn('No write since last change for buffer '.btarget.' (use :Bclose!)')
+    return
+  endif
+  " Numbers of windows that view target buffer which we will delete.
+  let wnums = filter(range(1, winnr('$')), 'winbufnr(v:val) == btarget')
+  if !g:bclose_multiple && len(wnums) > 1
+    call s:Warn('Buffer is in multiple windows (use ":let bclose_multiple=1")')
+    return
+  endif
+  let wcurrent = winnr()
+  for w in wnums
+    execute w.'wincmd w'
+    let prevbuf = bufnr('#')
+    if prevbuf > 0 && buflisted(prevbuf) && prevbuf != w
+      buffer #
+    else
+      bprevious
+    endif
+    if btarget == bufnr('%')
+      " Numbers of listed buffers which are not the target to be deleted.
+      let blisted = filter(range(1, bufnr('$')), 'buflisted(v:val) && v:val != btarget')
+      " Listed, not target, and not displayed.
+      let bhidden = filter(copy(blisted), 'bufwinnr(v:val) < 0')
+      " Take the first buffer, if any (could be more intelligent).
+      let bjump = (bhidden + blisted + [-1])[0]
+      if bjump > 0
+        execute 'buffer '.bjump
+      else
+        execute 'enew'.a:bang
+      endif
+    endif
+  endfor
+  execute 'bdelete'.a:bang.' '.btarget
+  execute wcurrent.'wincmd w'
+endfunction
+command! -bang -complete=buffer -nargs=? Bclose call s:Bclose('<bang>', '<args>')
+nnoremap <silent> <Leader>bd :Bclose<CR>
+
+"-------------------------------------------------------------------------------
+" Set & Toogle paste mode
+"-------------------------------------------------------------------------------
+set pastetoggle=<F9>
+
+"-------------------------------------------------------------------------------
+" Turn on filetype autocompletion
+"-------------------------------------------------------------------------------
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+
+autocmd FileType make set noexpandtab
+autocmd FileType make set nolist
+
+"-------------------------------------------------------------------------------
+" make YCM compatible with UltiSnips (using supertab)
+"-------------------------------------------------------------------------------
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+"-------------------------------------------------------------------------------
+" Configure Ctrl-P
+"-------------------------------------------------------------------------------
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip " MacOSX/Linux
+let g:ctrlp_use_caching = 0
+let g:ctrlp_user_command =
+      \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
+let g:ctrlp_map = ',t'
+nnoremap <silent> ,t :CtrlP<CR>
+" Additional mapping for buffer search
+nnoremap <silent> ,b :CtrlPBuffer<cr>
+map ,ja :CtrlP app/assets<CR>
+map ,jm :CtrlP app/models<CR>
+map ,jc :CtrlP app/controllers<CR>
+map ,jv :CtrlP app/views<CR>
+map ,jh :CtrlP app/helpers<CR>
+map ,jl :CtrlP lib<CR>
+map ,js :CtrlP spec<CR>
+map ,jd :CtrlP db<CR>
+map ,jC :CtrlP config<CR>
+map ,jV :CtrlP vendor<CR>
+
+"-------------------------------------------------------------------------------
+" Configure NERDTree
+"-------------------------------------------------------------------------------
+" Auto open nerd tree on startup
+let g:nerdtree_tabs_open_on_gui_startup = 0
+" Focus in the main content window
+let g:nerdtree_tabs_focus_on_files = 1
+" Make nerdtree look nice
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let g:NERDTreeWinSize = 30
+
+"-------------------------------------------------------------------------------
+" Configure UltiSnips
+"-------------------------------------------------------------------------------
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<tab>'
+let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
+let g:UltiSnipsListSnippets='<c-tab>'
+
+"-------------------------------------------------------------------------------
+" Settings for specific dirs
+"-------------------------------------------------------------------------------
+autocmd BufNewFile,BufRead ~/Proyectos/ruby/* set tabstop=8 nolist
+
+"-------------------------------------------------------------------------------
+" Markdown settings
+"-------------------------------------------------------------------------------
+let g:vim_markdown_folding_disabled = 1
+
+"-------------------------------------------------------------------------------
+" Format json easily
+"-------------------------------------------------------------------------------
+com! FormatJSON %!python -m json.tool
+
+"-------------------------------------------------------------------------------
+" Colorscheme
+"-------------------------------------------------------------------------------
+syntax enable
+set background=dark
+colorscheme solarized
+
+function! GetVisual()
+  let reg_save = getreg('"')
+  let regtype_save = getregtype('"')
+  let cb_save = &clipboard
+  set clipboard&
+  normal! ""gvy
+  let selection = getreg('"')
+  call setreg('"', reg_save, regtype_save)
+  let &clipboard = cb_save
+  return selection
+endfunction
+
+"-------------------------------------------------------------------------------
+" Grepping tool
+"-------------------------------------------------------------------------------
+set grepprg=ag
+let g:airline#extensions#tabline#enabled = 1
+"grep the current word using K (mnemonic Kurrent)
+nnoremap <silent> K :Ag <cword><CR>
+"grep visual selection
+vnoremap K :<C-U>execute "Ag " . GetVisual()<CR>
+"grep current word up to the next exclamation point using ,K
+nnoremap ,K viwf!:<C-U>execute "Ag " . GetVisual()<CR>
+"grep for 'def foo'
+nnoremap <silent> ,gd :Ag 'def <cword>'<CR>
+",gg = Grep! - using Ag the silver searcher
+" Open the Ag command and place the cursor into the quotes
+nmap ,ag :Ag ""<Left>
+nmap ,af :AgFile ""<Left>
