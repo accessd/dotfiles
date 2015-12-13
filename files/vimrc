@@ -20,7 +20,7 @@ call vundle#begin()
 "===============================================================================
 
 " Colorscheme
-Plugin 'https://github.com/freeo/vim-kalisi'
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'
 
 " Fuzzy file, buffer, mru, tag finder
