@@ -123,7 +123,6 @@ set softtabstop=0         " disable softtabstop feature
 set sr
 set expandtab
 set autowriteall
-set nonumber
 set showmode
 set ruler                 " show column numbers
 set nostartofline         " keep column when scrolling with <C-f>, <C-b>
