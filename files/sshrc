@@ -2,6 +2,7 @@ if [[ -f /etc/profile ]]; then source /etc/profile ; fi
 
 eval $(dircolors -b "${SSHHOME}/.sshrc.d/LS_COLORS")
 alias ls="ls --color=auto -F"
+export EDITOR=vim
 
 set -o vi
 
