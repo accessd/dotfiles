@@ -1,0 +1,18 @@
+if [[ -f /etc/profile ]]; then source /etc/profile ; fi
+
+eval $(dircolors -b "${SSHHOME}/.sshrc.d/LS_COLORS")
+alias ls="ls --color=auto -F"
+
+set -o vi
+
+alias psa="ps aux"
+alias psg="ps aux | grep "
+
+alias ll='ls -alGh'
+
+alias less='less -r'
+alias tf='tail -f'
+alias l='less'
+alias lh='ls -alt | head' # see the last modified files
+alias screen='TERM=screen screen'
+alias cl='clear'

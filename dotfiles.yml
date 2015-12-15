@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - file: src={{ curdir }}/files/{{ item }} dest=~/.{{ item }} state=link
+      with_items:
+        - sshrc
+
+    - name: Create ~/.sshrc.d
+      file: path=~/.sshrc.d state=directory
+
+    - file: src={{ curdir }}/files/{{ item }} dest=~/.sshrc.d/{{ item }} state=link
+      with_items:
+        - LS_COLORS

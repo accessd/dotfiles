@@ -3,7 +3,7 @@
   tasks:
     - file: src={{ curdir }}/files/{{ item }} dest=~/.{{ item }} state=link
       with_items:
-        - vimrc
+        - sshrc
 
     - git:
         repo: 'https://github.com/VundleVim/Vundle.vim.git'
