@@ -17,7 +17,7 @@ call vundle#begin()
 
 "===============================================================================
 " Enabled plugins
-"===============================================================================
+"==============================================================================
 
 " Colorscheme
 Plugin 'altercation/vim-colors-solarized'
@@ -36,8 +36,8 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
 
 " RSpec
-Plugin 'Keithbsmiley/rspec.vim'
-Plugin 'thoughtbot/vim-rspec'
+Plugin 'Keithbsmiley/rspec.vim' " Syntax highlighting
+Plugin 'janko-m/vim-test'
 
 " PHP
 Plugin '2072/PHP-Indenting-for-VIm'
@@ -46,11 +46,11 @@ Plugin 'StanAngeloff/php.vim'
 " Elixir
 Plugin 'elixir-lang/vim-elixir'
 
+" Interact with tmux
+Plugin 'benmills/vimux'
+
 " Markdown Enhancements
 Plugin 'plasticboy/vim-markdown'
-
-" Ctags generation
-Plugin 'szw/vim-tags'
 
 " Track UltiSnips (the engine)
 let g:loaded_python3_provider = 0
@@ -68,7 +68,7 @@ Plugin 'jistr/vim-nerdtree-tabs.git'
 Plugin 'scrooloose/nerdtree.git'
 
 " Moving and searching
-Plugin 'justinmk/vim-sneak'
+Plugin 'Lokaltog/vim-easymotion'
 Plugin 'rking/ag.vim'
 Plugin 'vim-scripts/IndexedSearch'
 Plugin 'nelstrom/vim-visual-star-search'
@@ -84,7 +84,6 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'kablamo/vim-git-log'
 
-Plugin 'sjl/tslime.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-fugitive'
@@ -182,12 +181,38 @@ map ,c :retab<CR> :%s/  *$//<CR>  " clean tabs and spaces at end of line
 map ,n j0f"lct"
 map <leader>x :tabn<cr>         " Select tab to the right using k"
 map <leader>z :tabp<cr>         " Select tab to the left using j"
+
+nmap s <Plug>(easymotion-s2)
+nmap t <Plug>(easymotion-t2)
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+
 " RSpec
-let g:rspec_command = "!bundle exec rspec {spec}"
-map <Leader>rs :call RunCurrentSpecFile()<CR>
-map <Leader>rl :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+nmap <silent> <leader>rl :TestNearest<CR>
+nmap <silent> <leader>rs :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+
+nmap <silent> <leader>rc :VimuxInterruptRunner<CR>
+nmap <silent> <leader>ri :VimuxInspectRunner<CR>
+nmap <silent> <leader>rz :VimuxZoomRunner<CR>
+
+function! MyCustomStrategy(cmd)
+  " echo 'It works! Command for running tests: ' . a:cmd
+  let spec_cmd = system("ruby ~/bin/format_rspec_cmd.rb " . a:cmd)
+  " echo 'It works! Command for running tests: ' . spec_cmd
+  call VimuxRunCommand(spec_cmd)
+endfunction
+
+let g:test#custom_strategies = {'my_strategy': function('MyCustomStrategy')}
+let g:test#strategy = 'my_strategy'
 
 " alias yw to yank the entire word 'yank inner word'
 " even if the cursor is halfway inside the word
