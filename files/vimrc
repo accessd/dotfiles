@@ -90,6 +90,9 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-repeat'
 
+Plugin 'terryma/vim-expand-region'
+Plugin 'scrooloose/syntastic'
+
 " Finish requiring Vundle plugins
 call vundle#end()
 
@@ -138,9 +141,20 @@ set secure                " disable unsafe commands in local .vimrc files
 set mousemodel=popup
 set laststatus=2
 set clipboard=unnamed
-set timeoutlen=1000 ttimeoutlen=0
+set timeoutlen=200 ttimeoutlen=1
 set colorcolumn=120
 set listchars=tab:\ \ ,eol:\ "
+
+" Cursor settings. This makes terminal vim sooo much nicer!
+" Tmux will only forward escape sequences to the terminal if surrounded by a DCS
+" sequence
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
 
 "-------------------------------------------------------------------------------
 " Syntax
@@ -154,6 +168,16 @@ autocmd Filetype php setlocal ts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype coffeescript setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype jade setlocal ts=4 sw=4 sts=0 expandtab
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_quiet_messages = {'level': 'warnings'}
 
 "-------------------------------------------------------------------------------
 " no backup
@@ -169,9 +193,19 @@ map ,e :BufExplorer<CR>
 map ,s :BufExplorerHorizontalSplit<CR>
 map ,v :BufExplorerVerticalSplit<CR>
 
+"===============================================================================
+" Fugitive
+"===============================================================================
+
+nnoremap <Leader>gb :Gblame<cr>
+nnoremap <Leader>gs :Gstatus<cr>
+
 "-------------------------------------------------------------------------------
 " misc maps
 "-------------------------------------------------------------------------------
+
+map E <Plug>(expand_region_expand)
+map Y <Plug>(expand_region_shrink)
 nmap <S-Enter> O<Esc>
 nmap <CR> o<Esc>
 map ,r :e %<CR>                   " reload file
@@ -365,6 +399,7 @@ nmap <leader>crs mQviwu`Q
 
 nmap <C-\> :NERDTreeFind<CR>
 nmap <silent> <leader><leader> :NERDTreeToggle<CR>
+nmap <leader>n :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
 
 " Automatically removing all trailing whitespace
