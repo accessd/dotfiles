@@ -478,7 +478,7 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 "-------------------------------------------------------------------------------
 " Configure Ctrl-P
 "-------------------------------------------------------------------------------
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip " MacOSX/Linux
+set wildignore=*.o,*.png,*.jpg,*.zip,*.tar*,*.pyc,*.min.js " ignore these filetypes in menus
 let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command =
       \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
