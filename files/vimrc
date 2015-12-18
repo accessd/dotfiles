@@ -92,6 +92,7 @@ Plugin 'tpope/vim-repeat'
 
 Plugin 'terryma/vim-expand-region'
 Plugin 'scrooloose/syntastic'
+Plugin 'Valloric/MatchTagAlways'
 
 " Finish requiring Vundle plugins
 call vundle#end()
