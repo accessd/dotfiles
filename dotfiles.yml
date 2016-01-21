@@ -1,9 +1,8 @@
 ---
 - hosts: all
   tasks:
-    - file: src={{ curdir }}/files/{{ item }} dest=~/.{{ item }} state=link
-      with_items:
-        - sshrc
+    - file: src={{ curdir }}/files/sshrc dest=~/.sshrc state=link
+    - file: src={{ curdir }}/files/tmux.conf dest=~/tmux.conf state=link
 
     - name: Create ~/.sshrc.d
       file: path=~/.sshrc.d state=directory
