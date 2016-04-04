@@ -24,7 +24,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'
 
 " Fuzzy file, buffer, mru, tag finder
-Plugin 'kien/ctrlp.vim'
+" Plugin 'kien/ctrlp.vim'
 
 " BufExplorer
 Plugin 'jlanzarotta/bufexplorer'
@@ -81,7 +81,7 @@ Plugin 'tomtom/tcomment_vim.git'
 Plugin 'Valloric/YouCompleteMe'
 
 " GIT
-Plugin 'airblade/vim-gitgutter'
+" Plugin 'airblade/vim-gitgutter'
 Plugin 'kablamo/vim-git-log'
 
 Plugin 'tpope/vim-surround'
@@ -93,6 +93,8 @@ Plugin 'tpope/vim-repeat'
 Plugin 'terryma/vim-expand-region'
 Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/MatchTagAlways'
+
+Plugin 'junegunn/fzf.vim'
 
 " Finish requiring Vundle plugins
 call vundle#end()
@@ -115,7 +117,7 @@ set number
 set history=700
 set mousehide
 set nowrap
-set textwidth=79
+set textwidth=119
 set tabstop=2             " tab size
 set backspace=2           " make backspace work
 set list                  " show hidden chars
@@ -145,6 +147,19 @@ set clipboard=unnamed
 set timeoutlen=200 ttimeoutlen=1
 set colorcolumn=120
 set listchars=tab:\ \ ,eol:\ "
+
+set nocursorcolumn       " do not highlight column
+set nocursorline         " do not highlight line
+syntax sync minlines=256 " start highlighting from 256 lines backwards
+set synmaxcol=300        " do not highlith very long lines
+set re=1                 " use explicit old regexpengine, seems to be more faster"
+
+set rtp+=~/.fzf
+
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 "-------------------------------------------------------------------------------
 " Syntax
@@ -504,23 +519,59 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 " Configure Ctrl-P
 "-------------------------------------------------------------------------------
 set wildignore=*.o,*.png,*.jpg,*.zip,*.tar*,*.pyc,*.min.js " ignore these filetypes in menus
-let g:ctrlp_use_caching = 0
-let g:ctrlp_user_command =
-      \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
-let g:ctrlp_map = ',t'
-nnoremap <silent> ,t :CtrlP<CR>
+
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+" - window (nvim only)
+let g:fzf_layout = { 'down': '~40%' }
+
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+
+" [[B]Commits] to customize the options used by 'git log':
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+
+" Advanced customization using autoload functions
+autocmd VimEnter * command! Colors
+  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
+
+" Mapping selecting mappings
+" nmap <leader>t <plug>(fzf-maps-n)
+" xmap <leader>t <plug>(fzf-maps-x)
+" omap <leader>t <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" let g:ctrlp_use_caching = 0
+" let g:ctrlp_user_command =
+      " \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
+" let g:ctrlp_map = ',t'
+nnoremap <silent> ,t :FZF!<CR>
+" nnoremap <silent> ,js :FZF spec<CR>
+nnoremap <silent> ,b :Buffers<CR>
+nnoremap <silent> ,c :BCommits<CR>
 " Additional mapping for buffer search
-nnoremap <silent> ,b :CtrlPBuffer<cr>
-map ,ja :CtrlP app/assets<CR>
-map ,jm :CtrlP app/models<CR>
-map ,jc :CtrlP app/controllers<CR>
-map ,jv :CtrlP app/views<CR>
-map ,jh :CtrlP app/helpers<CR>
-map ,jl :CtrlP lib<CR>
-map ,js :CtrlP spec<CR>
-map ,jd :CtrlP db<CR>
-map ,jC :CtrlP config<CR>
-map ,jV :CtrlP vendor<CR>
+" nnoremap <silent> ,b :CtrlPBuffer<cr>
+" map ,ja :CtrlP app/assets<CR>
+" map ,jm :CtrlP app/models<CR>
+" map ,jc :CtrlP app/controllers<CR>
+" map ,jv :CtrlP app/views<CR>
+" map ,jh :CtrlP app/helpers<CR>
+map ,jl :FZF -m wz_model/lib<CR>
+map ,js :FZF -m wz_model/spec<CR>
+" map ,jd :CtrlP db<CR>
+" map ,jC :CtrlP config<CR>
+" map ,jV :CtrlP vendor<CR>
 
 "-------------------------------------------------------------------------------
 " Configure NERDTree
