@@ -520,6 +520,7 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 "-------------------------------------------------------------------------------
 set wildignore=*.o,*.png,*.jpg,*.zip,*.tar*,*.pyc,*.min.js " ignore these filetypes in menus
 
+let g:fzf_command_prefix = 'Fzf'
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
