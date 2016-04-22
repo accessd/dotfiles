@@ -96,6 +96,8 @@ Plugin 'Valloric/MatchTagAlways'
 
 Plugin 'junegunn/fzf.vim'
 
+Plugin 'pearofducks/ansible-vim'
+
 " Finish requiring Vundle plugins
 call vundle#end()
 
