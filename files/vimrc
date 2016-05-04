@@ -97,6 +97,8 @@ Plugin 'Valloric/MatchTagAlways'
 Plugin 'junegunn/fzf.vim'
 
 Plugin 'pearofducks/ansible-vim'
+Plugin 'slim-template/vim-slim'
+Plugin 'kchmck/vim-coffee-script'
 
 " Finish requiring Vundle plugins
 call vundle#end()
