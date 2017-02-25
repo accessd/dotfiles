@@ -23,9 +23,6 @@ call vundle#begin()
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'
 
-" Fuzzy file, buffer, mru, tag finder
-" Plugin 'kien/ctrlp.vim'
-
 " BufExplorer
 Plugin 'jlanzarotta/bufexplorer'
 
@@ -81,11 +78,10 @@ Plugin 'tomtom/tcomment_vim.git'
 Plugin 'Valloric/YouCompleteMe'
 
 " GIT
-" Plugin 'airblade/vim-gitgutter'
 Plugin 'kablamo/vim-git-log'
 
 Plugin 'tpope/vim-surround'
-Plugin 'jiangmiao/auto-pairs'
+Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-repeat'
@@ -94,11 +90,12 @@ Plugin 'terryma/vim-expand-region'
 Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/MatchTagAlways'
 
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 
 Plugin 'pearofducks/ansible-vim'
-Plugin 'slim-template/vim-slim'
-Plugin 'kchmck/vim-coffee-script'
+" Plugin 'slim-template/vim-slim'
+" Plugin 'kchmck/vim-coffee-script'
 
 " Finish requiring Vundle plugins
 call vundle#end()
@@ -158,7 +155,7 @@ syntax sync minlines=256 " start highlighting from 256 lines backwards
 set synmaxcol=300        " do not highlith very long lines
 set re=1                 " use explicit old regexpengine, seems to be more faster"
 
-set rtp+=~/.fzf
+set rtp+=/usr/local/opt/fzf
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
@@ -389,10 +386,6 @@ if !hasmapto(':ChangeInsideSurrounding<CR>')
   nmap <script> <silent> <unique> <Leader>ci :ChangeInsideSurrounding<CR>
 endif
 
-if !hasmapto(':ChangeAroundSurrounding<CR>')
-  nmap <script> <silent> <unique> <Leader>cas :ChangeAroundSurrounding<CR>
-endif
-
 " ================ Persistent Undo ==================
 " Keep undo history across sessions, by storing in file.
 " Only works all the time.
@@ -415,7 +408,6 @@ let NERDTreeIgnore = ['\.pyc$']
 autocmd BufWritePre * :%s/\s\+$//e
 
 au BufRead,BufNewFile {Vagrantfile,Gemfile,Capfile} set ft=ruby
-:imap jj <Esc>l
 
 " Delete buffer while keeping window layout (don't close buffer's windows).
 " Version 2008-11-18 from http://vim.wikia.com/wiki/VimTip165
@@ -426,69 +418,6 @@ let loaded_bclose = 1
 if !exists('bclose_multiple')
   let bclose_multiple = 1
 endif
-
-" Display an error message.
-function! s:Warn(msg)
-  echohl ErrorMsg
-  echomsg a:msg
-  echohl NONE
-endfunction
-
-" Command ':Bclose' executes ':bd' to delete buffer in current window.
-" The window will show the alternate buffer (Ctrl-^) if it exists,
-" or the previous buffer (:bp), or a blank buffer if no previous.
-" Command ':Bclose!' is the same, but executes ':bd!' (discard changes).
-" An optional argument can specify which buffer to close (name or number).
-function! s:Bclose(bang, buffer)
-  if empty(a:buffer)
-    let btarget = bufnr('%')
-  elseif a:buffer =~ '^\d\+$'
-    let btarget = bufnr(str2nr(a:buffer))
-  else
-    let btarget = bufnr(a:buffer)
-  endif
-  if btarget < 0
-    call s:Warn('No matching buffer for '.a:buffer)
-    return
-  endif
-  if empty(a:bang) && getbufvar(btarget, '&modified')
-    call s:Warn('No write since last change for buffer '.btarget.' (use :Bclose!)')
-    return
-  endif
-  " Numbers of windows that view target buffer which we will delete.
-  let wnums = filter(range(1, winnr('$')), 'winbufnr(v:val) == btarget')
-  if !g:bclose_multiple && len(wnums) > 1
-    call s:Warn('Buffer is in multiple windows (use ":let bclose_multiple=1")')
-    return
-  endif
-  let wcurrent = winnr()
-  for w in wnums
-    execute w.'wincmd w'
-    let prevbuf = bufnr('#')
-    if prevbuf > 0 && buflisted(prevbuf) && prevbuf != w
-      buffer #
-    else
-      bprevious
-    endif
-    if btarget == bufnr('%')
-      " Numbers of listed buffers which are not the target to be deleted.
-      let blisted = filter(range(1, bufnr('$')), 'buflisted(v:val) && v:val != btarget')
-      " Listed, not target, and not displayed.
-      let bhidden = filter(copy(blisted), 'bufwinnr(v:val) < 0')
-      " Take the first buffer, if any (could be more intelligent).
-      let bjump = (bhidden + blisted + [-1])[0]
-      if bjump > 0
-        execute 'buffer '.bjump
-      else
-        execute 'enew'.a:bang
-      endif
-    endif
-  endfor
-  execute 'bdelete'.a:bang.' '.btarget
-  execute wcurrent.'wincmd w'
-endfunction
-command! -bang -complete=buffer -nargs=? Bclose call s:Bclose('<bang>', '<args>')
-nnoremap <silent> <Leader>bd :Bclose<CR>
 
 "-------------------------------------------------------------------------------
 " Set & Toogle paste mode
@@ -546,37 +475,14 @@ let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %
 autocmd VimEnter * command! Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
 
-" Mapping selecting mappings
-" nmap <leader>t <plug>(fzf-maps-n)
-" xmap <leader>t <plug>(fzf-maps-x)
-" omap <leader>t <plug>(fzf-maps-o)
-
 " Insert mode completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
-" let g:ctrlp_use_caching = 0
-" let g:ctrlp_user_command =
-      " \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
-" let g:ctrlp_map = ',t'
 nnoremap <silent> ,t :FZF!<CR>
 " nnoremap <silent> ,js :FZF spec<CR>
-nnoremap <silent> ,b :Buffers<CR>
-nnoremap <silent> ,c :BCommits<CR>
-" Additional mapping for buffer search
-" nnoremap <silent> ,b :CtrlPBuffer<cr>
-" map ,ja :CtrlP app/assets<CR>
-" map ,jm :CtrlP app/models<CR>
-" map ,jc :CtrlP app/controllers<CR>
-" map ,jv :CtrlP app/views<CR>
-" map ,jh :CtrlP app/helpers<CR>
-map ,jl :FZF -m wz_model/lib<CR>
-map ,js :FZF -m wz_model/spec<CR>
-" map ,jd :CtrlP db<CR>
-" map ,jC :CtrlP config<CR>
-" map ,jV :CtrlP vendor<CR>
 
 "-------------------------------------------------------------------------------
 " Configure NERDTree
