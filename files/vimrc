@@ -41,10 +41,10 @@ Plugin '2072/PHP-Indenting-for-VIm'
 Plugin 'StanAngeloff/php.vim'
 
 " Elixir
-Plugin 'elixir-lang/vim-elixir'
+" Plugin 'elixir-lang/vim-elixir'
 
 " Interact with tmux
-Plugin 'benmills/vimux'
+Plugin 'dkrieger/vimux'
 
 " Markdown Enhancements
 Plugin 'plasticboy/vim-markdown'
@@ -67,9 +67,9 @@ Plugin 'scrooloose/nerdtree.git'
 " Moving and searching
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'rking/ag.vim'
-Plugin 'vim-scripts/IndexedSearch'
-Plugin 'nelstrom/vim-visual-star-search'
-Plugin 'skwp/greplace.vim'
+" Plugin 'vim-scripts/IndexedSearch'
+" Plugin 'nelstrom/vim-visual-star-search'
+" Plugin 'skwp/greplace.vim'
 
 " Comments
 Plugin 'tomtom/tcomment_vim.git'
@@ -78,17 +78,17 @@ Plugin 'tomtom/tcomment_vim.git'
 Plugin 'Valloric/YouCompleteMe'
 
 " GIT
-Plugin 'kablamo/vim-git-log'
+" Plugin 'kablamo/vim-git-log'
 
 Plugin 'tpope/vim-surround'
-Plugin 'Raimondi/delimitMate'
-Plugin 'tpope/vim-fugitive'
+" Plugin 'Raimondi/delimitMate'
+" Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-repeat'
+" Plugin 'tpope/vim-repeat'
 
 Plugin 'terryma/vim-expand-region'
-Plugin 'scrooloose/syntastic'
-Plugin 'Valloric/MatchTagAlways'
+" Plugin 'scrooloose/syntastic'
+" Plugin 'Valloric/MatchTagAlways'
 
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
@@ -96,6 +96,8 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'pearofducks/ansible-vim'
 " Plugin 'slim-template/vim-slim'
 " Plugin 'kchmck/vim-coffee-script'
+
+Plugin 'tpope/vim-obsession'
 
 " Finish requiring Vundle plugins
 call vundle#end()
@@ -176,7 +178,7 @@ autocmd Filetype coffeescript setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype jade setlocal ts=4 sw=4 sts=0 expandtab
 
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
@@ -198,13 +200,6 @@ set noswapfile
 map ,e :BufExplorer<CR>
 map ,s :BufExplorerHorizontalSplit<CR>
 map ,v :BufExplorerVerticalSplit<CR>
-
-"===============================================================================
-" Fugitive
-"===============================================================================
-
-nnoremap <Leader>gb :Gblame<cr>
-nnoremap <Leader>gs :Gstatus<cr>
 
 "-------------------------------------------------------------------------------
 " misc maps
@@ -246,13 +241,19 @@ nmap <silent> <leader>rz :VimuxZoomRunner<CR>
 
 function! MyCustomStrategy(cmd)
   " echo 'It works! Command for running tests: ' . a:cmd
-  let spec_cmd = system("ruby ~/bin/format_rspec_cmd.rb " . a:cmd)
+  let spec_cmd = system("./bin/rspec_spring " . a:cmd)
   " echo 'It works! Command for running tests: ' . spec_cmd
   call VimuxRunCommand(spec_cmd)
 endfunction
 
-let g:test#custom_strategies = {'my_strategy': function('MyCustomStrategy')}
-let g:test#strategy = 'my_strategy'
+" let g:test#custom_strategies = {'my_strategy': function('MyCustomStrategy')}
+let g:test#strategy = 'vimux'
+
+" Always run split-window instead of using nearest pane
+let VimuxUseNearest = 0
+
+" Use last pane as runner
+let g:VimuxUseLast = 1
 
 " alias yw to yank the entire word 'yank inner word'
 " even if the cursor is halfway inside the word
@@ -400,7 +401,6 @@ nmap <leader>cru mQviwU`Q
 nmap <leader>crs mQviwu`Q
 
 nmap <C-\> :NERDTreeFind<CR>
-nmap <silent> <leader><leader> :NERDTreeToggle<CR>
 nmap <leader>n :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
 
@@ -468,9 +468,6 @@ let g:fzf_layout = { 'down': '~40%' }
 " [Buffers] Jump to the existing window if possible
 let g:fzf_buffers_jump = 1
 
-" [[B]Commits] to customize the options used by 'git log':
-let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
 " Advanced customization using autoload functions
 autocmd VimEnter * command! Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
@@ -505,11 +502,6 @@ let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
 let g:UltiSnipsListSnippets='<c-tab>'
 
 "-------------------------------------------------------------------------------
-" Settings for specific dirs
-"-------------------------------------------------------------------------------
-autocmd BufNewFile,BufRead ~/Proyectos/ruby/* set tabstop=8 nolist
-
-"-------------------------------------------------------------------------------
 " Markdown settings
 "-------------------------------------------------------------------------------
 let g:vim_markdown_folding_disabled = 1
@@ -526,18 +518,6 @@ syntax enable
 set background=dark
 colorscheme solarized
 
-function! GetVisual()
-  let reg_save = getreg('"')
-  let regtype_save = getregtype('"')
-  let cb_save = &clipboard
-  set clipboard&
-  normal! ""gvy
-  let selection = getreg('"')
-  call setreg('"', reg_save, regtype_save)
-  let &clipboard = cb_save
-  return selection
-endfunction
-
 "-------------------------------------------------------------------------------
 " Grepping tool
 "-------------------------------------------------------------------------------
@@ -545,10 +525,6 @@ set grepprg=ag
 let g:airline#extensions#tabline#enabled = 1
 "grep the current word using K (mnemonic Kurrent)
 nnoremap <silent> K :Ag <cword><CR>
-"grep visual selection
-vnoremap K :<C-U>execute "Ag " . GetVisual()<CR>
-"grep current word up to the next exclamation point using ,K
-nnoremap ,K viwf!:<C-U>execute "Ag " . GetVisual()<CR>
 "grep for 'def foo'
 nnoremap <silent> ,gd :Ag 'def <cword>'<CR>
 ",gg = Grep! - using Ag the silver searcher
