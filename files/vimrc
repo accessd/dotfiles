@@ -81,14 +81,14 @@ Plugin 'Valloric/YouCompleteMe'
 " Plugin 'kablamo/vim-git-log'
 
 Plugin 'tpope/vim-surround'
-" Plugin 'Raimondi/delimitMate'
-" Plugin 'tpope/vim-fugitive'
+Plugin 'Raimondi/delimitMate'
+Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
-" Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-repeat'
 
 Plugin 'terryma/vim-expand-region'
-" Plugin 'scrooloose/syntastic'
-" Plugin 'Valloric/MatchTagAlways'
+Plugin 'scrooloose/syntastic'
+Plugin 'Valloric/MatchTagAlways'
 
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
@@ -534,3 +534,17 @@ nmap ,af :AgFile ""<Left>
 
 " style of indenting assignment for multiline expressions:
 let g:ruby_indent_assignment_style = 'variable'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RENAME CURRENT FILE (thanks Gary Bernhardt)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+map <Leader>rf :call RenameFile()<cr>
