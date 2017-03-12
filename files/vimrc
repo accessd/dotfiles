@@ -67,8 +67,8 @@ Plugin 'scrooloose/nerdtree.git'
 " Moving and searching
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'rking/ag.vim'
-" Plugin 'vim-scripts/IndexedSearch'
-" Plugin 'nelstrom/vim-visual-star-search'
+Plugin 'vim-scripts/IndexedSearch'
+Plugin 'nelstrom/vim-visual-star-search'
 " Plugin 'skwp/greplace.vim'
 
 " Comments
@@ -531,3 +531,6 @@ nnoremap <silent> ,gd :Ag 'def <cword>'<CR>
 " Open the Ag command and place the cursor into the quotes
 nmap ,ag :Ag ""<Left>
 nmap ,af :AgFile ""<Left>
+
+" style of indenting assignment for multiline expressions:
+let g:ruby_indent_assignment_style = 'variable'
