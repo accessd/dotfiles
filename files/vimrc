@@ -43,6 +43,12 @@ Plugin 'StanAngeloff/php.vim'
 " Elixir
 " Plugin 'elixir-lang/vim-elixir'
 
+" Slim && CoffeeScript
+" Plugin 'slim-template/vim-slim'
+Plugin 'kchmck/vim-coffee-script'
+
+Plugin 'pearofducks/ansible-vim'
+
 " Interact with tmux
 Plugin 'dkrieger/vimux'
 
@@ -68,36 +74,33 @@ Plugin 'scrooloose/nerdtree.git'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'rking/ag.vim'
 Plugin 'vim-scripts/IndexedSearch'
-Plugin 'nelstrom/vim-visual-star-search'
+" Plugin 'nelstrom/vim-visual-star-search'
 " Plugin 'skwp/greplace.vim'
 
 " Comments
 Plugin 'tomtom/tcomment_vim.git'
 
 " Autocomplete
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
+Plugin 'ajh17/VimCompletesMe'
 
 " GIT
-" Plugin 'kablamo/vim-git-log'
+Plugin 'tpope/vim-fugitive'
 
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
-Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-repeat'
-
 Plugin 'terryma/vim-expand-region'
-Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/MatchTagAlways'
+
+" Plugin 'scrooloose/syntastic'
 
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 
-Plugin 'pearofducks/ansible-vim'
-" Plugin 'slim-template/vim-slim'
-" Plugin 'kchmck/vim-coffee-script'
-
-Plugin 'tpope/vim-obsession'
+Plugin 'takac/vim-hardtime'
+Plugin 'bkad/CamelCaseMotion'
 
 " Finish requiring Vundle plugins
 call vundle#end()
@@ -159,6 +162,9 @@ set re=1                 " use explicit old regexpengine, seems to be more faste
 
 set rtp+=/usr/local/opt/fzf
 
+" ruby path if you are using rbenv
+let g:ruby_path = system('echo $HOME/.rbenv/shims')
+
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
 nnoremap n nzzzv
@@ -168,6 +174,7 @@ nnoremap N Nzzzv
 " Syntax
 "-------------------------------------------------------------------------------
 autocmd BufNewFile,BufRead *.ini silent! set syntax=cfg
+autocmd BufNewFile,BufRead *.coffee silent! set syntax=coffee
 
 " by default, the indent is 2 spaces but ...
 " for php 4 spaces
@@ -181,12 +188,21 @@ set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_quiet_messages = {'level': 'warnings'}
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_quiet_messages = {'level': 'warnings'}
 
+call camelcasemotion#CreateMotionMappings('<leader>')
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+map <silent> ge <Plug>CamelCaseMotion_ge
+sunmap w
+sunmap b
+sunmap e
+sunmap ge
 "-------------------------------------------------------------------------------
 " no backup
 "-------------------------------------------------------------------------------
@@ -212,13 +228,11 @@ nmap <CR> o<Esc>
 map ,r :e %<CR>                   " reload file
 map Q :bd<CR>                     " close buffer
 map ,s :w<CR>										  " save file
-map ,c :retab<CR> :%s/  *$//<CR>  " clean tabs and spaces at end of line
-map ,n j0f"lct"
 map <leader>x :tabn<cr>         " Select tab to the right using k"
 map <leader>z :tabp<cr>         " Select tab to the left using j"
 
-nmap s <Plug>(easymotion-s2)
-nmap t <Plug>(easymotion-t2)
+" nmap s <Plug>(easymotion-s2)
+nmap t <Plug>(easymotion-s2)
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 
@@ -427,29 +441,27 @@ set pastetoggle=<F9>
 "-------------------------------------------------------------------------------
 " Turn on filetype autocompletion
 "-------------------------------------------------------------------------------
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+" autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+" autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+" autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+" autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+" autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+" autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+
+autocmd FileType ruby,text,markdown let b:vcm_tab_complete = 'dict'
+
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Down>"
+inoremap <expr> <C-o> "\<C-y>"
 
 autocmd FileType make set noexpandtab
 autocmd FileType make set nolist
 
 "-------------------------------------------------------------------------------
-" make YCM compatible with UltiSnips (using supertab)
-"-------------------------------------------------------------------------------
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-
-"-------------------------------------------------------------------------------
-" Configure Ctrl-P
+" Configure fzf
 "-------------------------------------------------------------------------------
 set wildignore=*.o,*.png,*.jpg,*.zip,*.tar*,*.pyc,*.min.js " ignore these filetypes in menus
 
@@ -496,10 +508,15 @@ let g:NERDTreeWinSize = 30
 "-------------------------------------------------------------------------------
 " Configure UltiSnips
 "-------------------------------------------------------------------------------
-let g:UltiSnipsExpandTrigger='<tab>'
-let g:UltiSnipsJumpForwardTrigger='<tab>'
-let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
-let g:UltiSnipsListSnippets='<c-tab>'
+" let g:UltiSnipsExpandTrigger='<tab>'
+" let g:UltiSnipsJumpForwardTrigger='<tab>'
+" let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
+
+let g:UltiSnipsExpandTrigger="<c-s>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsListSnippets='<c-l>'
+
 
 "-------------------------------------------------------------------------------
 " Markdown settings
@@ -548,3 +565,7 @@ function! RenameFile()
   endif
 endfunction
 map <Leader>rf :call RenameFile()<cr>
+
+let g:hardtime_showmsg = 1
+let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*" ]
+let g:hardtime_ignore_quickfix = 1
