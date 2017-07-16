@@ -44,7 +44,7 @@ Plugin 'StanAngeloff/php.vim'
 " Plugin 'elixir-lang/vim-elixir'
 
 " Slim && CoffeeScript
-" Plugin 'slim-template/vim-slim'
+Plugin 'slim-template/vim-slim'
 Plugin 'kchmck/vim-coffee-script'
 
 Plugin 'pearofducks/ansible-vim'
@@ -151,7 +151,7 @@ set mousemodel=popup
 set laststatus=2
 set clipboard=unnamed
 set timeoutlen=200 ttimeoutlen=1
-set colorcolumn=120
+set colorcolumn=100
 set listchars=tab:\ \ ,eol:\ "
 
 set nocursorcolumn       " do not highlight column
@@ -183,6 +183,7 @@ autocmd Filetype php setlocal ts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype coffeescript setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype jade setlocal ts=4 sw=4 sts=0 expandtab
+autocmd Filetype ruby setlocal ts=2 sw=2 expandtab
 
 set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
@@ -308,6 +309,9 @@ vmap ,{ c{<C-R>"}<ESC>
 
 map ,` ysiw`
 
+
+vmap ,roh `<elcF>:<ESC>
+
 " ,q to toggle quickfix window (where you have stuff like Ag)
 " ,oq to open it back up (rare)
 nmap <silent> ,qc :cclose<CR>
@@ -421,7 +425,7 @@ let NERDTreeIgnore = ['\.pyc$']
 " Automatically removing all trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
 
-au BufRead,BufNewFile {Vagrantfile,Gemfile,Capfile} set ft=ruby
+au BufRead,BufNewFile {Vagrantfile,Gemfile,Capfile,*.arb} set ft=ruby
 
 " Delete buffer while keeping window layout (don't close buffer's windows).
 " Version 2008-11-18 from http://vim.wikia.com/wiki/VimTip165
@@ -441,15 +445,15 @@ set pastetoggle=<F9>
 "-------------------------------------------------------------------------------
 " Turn on filetype autocompletion
 "-------------------------------------------------------------------------------
-" autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-" autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-" autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-" autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-" autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-" autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-" autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-" autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-" autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
 autocmd FileType ruby,text,markdown let b:vcm_tab_complete = 'dict'
 
@@ -541,12 +545,12 @@ colorscheme solarized
 set grepprg=ag
 let g:airline#extensions#tabline#enabled = 1
 "grep the current word using K (mnemonic Kurrent)
-nnoremap <silent> K :Ag <cword><CR>
+nnoremap <silent> K :tab split<CR>:Ag <cword><CR>
 "grep for 'def foo'
 nnoremap <silent> ,gd :Ag 'def <cword>'<CR>
 ",gg = Grep! - using Ag the silver searcher
 " Open the Ag command and place the cursor into the quotes
-nmap ,ag :Ag ""<Left>
+nmap ,ag :tab split<CR>:Ag ""<Left>
 nmap ,af :AgFile ""<Left>
 
 " style of indenting assignment for multiline expressions:
@@ -569,3 +573,6 @@ map <Leader>rf :call RenameFile()<cr>
 let g:hardtime_showmsg = 1
 let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*" ]
 let g:hardtime_ignore_quickfix = 1
+
+" open spec in vertical split
+nmap vs vv <C-l> :A<CR> <C-h>
