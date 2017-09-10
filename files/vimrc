@@ -609,3 +609,5 @@ function! Multiple_cursors_after()
   endif
 endfunction
 
+" Quickly open a buffer for scribble
+map <leader>q :tabedit ~/buffer<cr>
