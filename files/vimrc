@@ -107,6 +107,8 @@ Plugin 'Konfekt/FastFold'
 
 Plugin 'vim-obsession'
 
+Plugin 'junegunn/goyo.vim'
+
 " Finish requiring Vundle plugins
 call vundle#end()
 
