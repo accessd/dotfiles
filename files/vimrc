@@ -82,7 +82,8 @@ Plugin 'tomtom/tcomment_vim.git'
 
 " Autocomplete
 " Plugin 'Valloric/YouCompleteMe'
-Plugin 'ajh17/VimCompletesMe'
+" Plugin 'ajh17/VimCompletesMe'
+Plugin 'Shougo/neocomplete.vim'
 
 " GIT
 Plugin 'tpope/vim-fugitive'
@@ -101,6 +102,10 @@ Plugin 'junegunn/fzf.vim'
 
 Plugin 'takac/vim-hardtime'
 Plugin 'bkad/CamelCaseMotion'
+
+Plugin 'Konfekt/FastFold'
+
+Plugin 'vim-obsession'
 
 " Finish requiring Vundle plugins
 call vundle#end()
@@ -309,9 +314,6 @@ vmap ,{ c{<C-R>"}<ESC>
 
 map ,` ysiw`
 
-
-vmap ,roh `<elcF>:<ESC>
-
 " ,q to toggle quickfix window (where you have stuff like Ag)
 " ,oq to open it back up (rare)
 nmap <silent> ,qc :cclose<CR>
@@ -326,19 +328,9 @@ nnoremap <silent> ss <C-w>s
 "Clear current search highlight by double tapping //
 nmap <silent> // :nohlsearch<CR>
 
-" Change inside various enclosures with Ctrl-" and Ctrl-'
-" The f makes it find the enclosure so you don't have
-" to be standing inside it
-nnoremap <C-'> f'ci'
-nnoremap <C-"> f"ci"
-nnoremap <C-(> f(ci(
-nnoremap <C-)> f)ci)
-nnoremap <C-[> f[ci[
-nnoremap <C-]> f]ci]
-
 " Command-/ to toggle comments
-map <C-/> :TComment<CR>
-imap <C-/> <Esc>:TComment<CR>i
+map <C-_> :TComment<CR>
+imap <C-_> <Esc>:TComment<CR>i
 
 " Use Leader- numbers to pick the tab you want
 map <silent> <leader>1 :tabn 1<cr>
@@ -437,10 +429,6 @@ if !exists('bclose_multiple')
   let bclose_multiple = 1
 endif
 
-"-------------------------------------------------------------------------------
-" Set & Toogle paste mode
-"-------------------------------------------------------------------------------
-set pastetoggle=<F9>
 
 "-------------------------------------------------------------------------------
 " Turn on filetype autocompletion
@@ -455,7 +443,20 @@ autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
-autocmd FileType ruby,text,markdown let b:vcm_tab_complete = 'dict'
+autocmd FileType ruby compiler ruby
+
+" autocmd FileType ruby,text,markdown let b:vcm_tab_complete = 'dict'
+
+let g:neocomplete#enable_at_startup = 1
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+endif
+if !exists('g:neocomplete#sources#omni#force_omni_input_patterns')
+    let g:neocomplete#sources#omni#force_omni_input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.ruby = '[^.[:digit:] *\t]\%(\.\|->\)'
 
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Down>"
@@ -516,9 +517,9 @@ let g:NERDTreeWinSize = 30
 " let g:UltiSnipsJumpForwardTrigger='<tab>'
 " let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
 
-let g:UltiSnipsExpandTrigger="<c-s>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+" let g:UltiSnipsExpandTrigger="<c-s>"
+let g:UltiSnipsJumpForwardTrigger="<c-n>"
+let g:UltiSnipsJumpBackwardTrigger="<c-p>"
 let g:UltiSnipsListSnippets='<c-l>'
 
 
@@ -543,18 +544,12 @@ colorscheme solarized
 " Grepping tool
 "-------------------------------------------------------------------------------
 set grepprg=ag
-let g:airline#extensions#tabline#enabled = 1
 "grep the current word using K (mnemonic Kurrent)
 nnoremap <silent> K :tab split<CR>:Ag <cword><CR>
-"grep for 'def foo'
-nnoremap <silent> ,gd :Ag 'def <cword>'<CR>
 ",gg = Grep! - using Ag the silver searcher
 " Open the Ag command and place the cursor into the quotes
-nmap ,ag :tab split<CR>:Ag ""<Left>
+nmap ,ag :Ag ""<Left>
 nmap ,af :AgFile ""<Left>
-
-" style of indenting assignment for multiline expressions:
-let g:ruby_indent_assignment_style = 'variable'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RENAME CURRENT FILE (thanks Gary Bernhardt)
@@ -570,9 +565,47 @@ function! RenameFile()
 endfunction
 map <Leader>rf :call RenameFile()<cr>
 
-let g:hardtime_showmsg = 1
-let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*" ]
-let g:hardtime_ignore_quickfix = 1
-
 " open spec in vertical split
 nmap vs vv <C-l> :A<CR> <C-h>
+
+set ttyfast
+set lazyredraw
+
+if v:version >= 703
+  " Note: Relative number is quite slow with Ruby, so is cursorline
+  autocmd FileType ruby setlocal ts=2 sts=2 sw=2 norelativenumber nocursorline
+else
+  autocmd FileType ruby setlocal ts=2 sts=2 sw=2
+endif
+
+augroup ft_rb
+    au!
+    " fix the SLOOOW syntax highlighting
+    au FileType ruby setlocal re=1 foldmethod=manual
+augroup END
+
+" Disable hover tooltips
+set noballooneval
+let g:netrw_nobeval = 1
+
+" let g:php_folding = 1
+" let g:ruby_folding = 1
+let g:airline#extensions#tabline#enabled = 1
+
+" Ruby hash syntax conversion
+nnoremap <F12> :%s/:\([^ ]*\)\(\s*\)=>/\1:/g<return>
+
+" Called once right before you start selecting multiple cursors
+function! Multiple_cursors_before()
+  if exists(':NeoCompleteLock')==2
+    exe 'NeoCompleteLock'
+  endif
+endfunction
+
+" Called once only when the multiple selection is canceled (default <Esc>)
+function! Multiple_cursors_after()
+  if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+  endif
+endfunction
+
