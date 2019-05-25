@@ -83,10 +83,14 @@ Plugin 'tomtom/tcomment_vim.git'
 " Autocomplete
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'ajh17/VimCompletesMe'
-Plugin 'Shougo/neocomplete.vim'
+" Plugin 'Shougo/neocomplete.vim'
+
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc'
 
 " GIT
-Plugin 'tpope/vim-fugitive'
+" Plugin 'tpope/vim-fugitive'
 
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
@@ -100,14 +104,11 @@ Plugin 'Valloric/MatchTagAlways'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 
-Plugin 'takac/vim-hardtime'
 Plugin 'bkad/CamelCaseMotion'
 
-Plugin 'Konfekt/FastFold'
+Plugin 'majutsushi/tagbar'
 
-Plugin 'vim-obsession'
-
-Plugin 'junegunn/goyo.vim'
+" Plugin 'edkolev/tmuxline.vim'
 
 " Finish requiring Vundle plugins
 call vundle#end()
@@ -126,6 +127,7 @@ syntax on
 let mapleader = ','
 let g:mapleader = ','
 
+set pyxversion=3
 set number
 set history=700
 set mousehide
@@ -261,14 +263,6 @@ nmap <silent> <leader>rc :VimuxInterruptRunner<CR>
 nmap <silent> <leader>ri :VimuxInspectRunner<CR>
 nmap <silent> <leader>rz :VimuxZoomRunner<CR>
 
-function! MyCustomStrategy(cmd)
-  " echo 'It works! Command for running tests: ' . a:cmd
-  let spec_cmd = system("./bin/rspec_spring " . a:cmd)
-  " echo 'It works! Command for running tests: ' . spec_cmd
-  call VimuxRunCommand(spec_cmd)
-endfunction
-
-" let g:test#custom_strategies = {'my_strategy': function('MyCustomStrategy')}
 let g:test#strategy = 'vimux'
 
 " Always run split-window instead of using nearest pane
@@ -330,9 +324,9 @@ nnoremap <silent> ss <C-w>s
 "Clear current search highlight by double tapping //
 nmap <silent> // :nohlsearch<CR>
 
-" Command-/ to toggle comments
-map <C-_> :TComment<CR>
-imap <C-_> <Esc>:TComment<CR>i
+" Ctrl-/ to toggle comments
+map <C-w> :TComment<CR>
+imap <C-w> <Esc>:TComment<CR>i
 
 " Use Leader- numbers to pick the tab you want
 map <silent> <leader>1 :tabn 1<cr>
@@ -445,11 +439,12 @@ autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
-autocmd FileType ruby compiler ruby
+" autocmd FileType ruby compiler ruby
 
 " autocmd FileType ruby,text,markdown let b:vcm_tab_complete = 'dict'
 
-let g:neocomplete#enable_at_startup = 1
+" let g:neocomplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -592,7 +587,7 @@ let g:netrw_nobeval = 1
 
 " let g:php_folding = 1
 " let g:ruby_folding = 1
-let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#enabled = 1
 
 " Ruby hash syntax conversion
 nnoremap <F12> :%s/:\([^ ]*\)\(\s*\)=>/\1:/g<return>
@@ -613,3 +608,10 @@ endfunction
 
 " Quickly open a buffer for scribble
 map <leader>q :tabedit ~/buffer<cr>
+
+" let g:tmuxline_preset = {
+"       \'a'    : '#S',
+"       \'c'    : '#(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD) #(cd #{pane_current_path}; git tag | tail -1)',
+"       \'win'  : ['#I', '#W'],
+"       \'cwin' : ['#I', '#W', '#F'],
+"       \'z'    : '#{battery_icon} #{battery_percentage} #{battery_remain}'}
