@@ -268,9 +268,9 @@ set noswapfile
 "-------------------------------------------------------------------------------
 " bufexplorer
 "-------------------------------------------------------------------------------
-map ,e :BufExplorer<CR>
-map ,s :BufExplorerHorizontalSplit<CR>
-map ,v :BufExplorerVerticalSplit<CR>
+map <leader>e :BufExplorer<CR>
+map <leader>s :BufExplorerHorizontalSplit<CR>
+map <leader>v :BufExplorerVerticalSplit<CR>
 
 "-------------------------------------------------------------------------------
 " misc maps
@@ -280,9 +280,9 @@ map E <Plug>(expand_region_expand)
 map Y <Plug>(expand_region_shrink)
 nmap <S-Enter> O<Esc>
 nmap <CR> o<Esc>
-map ,r :e %<CR>                   " reload file
+map <leader>r :e %<CR>                   " reload file
 map Q :bd<CR>                     " close buffer
-map ,s :w<CR>										  " save file
+map <leader>s :w<CR>										  " save file
 map <leader>x :tabn<cr>         " Select tab to the right using k"
 map <leader>z :tabp<cr>         " Select tab to the left using j"
 
@@ -304,11 +304,12 @@ nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 
-nmap <silent> <leader>rc :VimuxInterruptRunner<CR>
-nmap <silent> <leader>ri :VimuxInspectRunner<CR>
-nmap <silent> <leader>rz :VimuxZoomRunner<CR>
+nmap <silent> <leader>vc :VimuxInterruptRunner<CR>
+nmap <silent> <leader>wi :VimuxInspectRunner<CR>
+nmap <silent> <leader>w :VimuxZoomRunner<CR>
 
 let g:test#strategy = 'vimux'
+let test#ruby#use_spring_binstub = 1
 
 " Always run split-window instead of using nearest pane
 let VimuxUseNearest = 0
@@ -498,8 +499,6 @@ if !exists('g:neocomplete#sources#omni#force_omni_input_patterns')
 endif
 let g:neocomplete#sources#omni#input_patterns.ruby = '[^.[:digit:] *\t]\%(\.\|->\)'
 
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Down>"
 inoremap <expr> <C-o> "\<C-y>"
 
 autocmd FileType make set noexpandtab
@@ -534,6 +533,8 @@ imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 
 nnoremap <silent> ,t :FZF!<CR>
 " nnoremap <silent> ,js :FZF spec<CR>
@@ -720,6 +721,17 @@ inoremap <silent><expr> <TAB>
       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+inoremap <silent><expr> <C-j>
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><C-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
