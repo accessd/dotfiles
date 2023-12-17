@@ -143,6 +143,8 @@ Plug 'junegunn/vim-emoji'
 
 Plug 'dracula/vim', { 'as': 'dracula' }
 
+Plug '907th/vim-auto-save'
+
 " Plug 'edkolev/tmuxline.vim'
 
 " Finish requiring Vundle plugins
@@ -742,3 +744,26 @@ let g:coc_snippet_next = '<tab>'
 
 " open yank list with coc-yank
 nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+
+function! HtmlCodesToUnicode(line)
+    let result = a:line
+    let i = 1
+    while i < len(result)
+        if result[i] == '#' && result[i-1] == '&'
+            let end = match(result, ';', i)
+            if end != -1
+                let num = str2nr(result[i+1 : end-1])
+                let char = nr2char(num)
+                let result = result[0 : i-2] . char . result[end+1 : ]
+            endif
+        endif
+        let i += 1
+    endwhile
+    return result
+endfunction
+
+" Fugitive Conflict Resolution
+nnoremap <leader>gd :Gvdiffsplit!<CR>
+" nnoremap gdh :diffget //2<CR>
+nnoremap gdl :diffget LO<CR>
+nnoremap gdr :diffget RE<CR>
