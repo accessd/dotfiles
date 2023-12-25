@@ -3,6 +3,8 @@
   tasks:
     # - file: src={{ curdir }}/files/sshrc dest=~/.sshrc state=link
     - file: src={{ curdir }}/files/tmux.conf dest=~/.tmux.conf state=link force=true
+    - file: src={{ curdir }}/files/skhdrc dest=~/.skhdrc state=link force=true
+    - file: src={{ curdir }}/files/yabairc dest=~/.yabairc state=link force=true
 
     # - name: Create ~/.sshrc.d
     #   file: path=~/.sshrc.d state=directory
