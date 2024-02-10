@@ -5,6 +5,8 @@
     - file: src={{ curdir }}/files/tmux.conf dest=~/.tmux.conf state=link force=true
     - file: src={{ curdir }}/files/skhdrc dest=~/.skhdrc state=link force=true
     - file: src={{ curdir }}/files/yabairc dest=~/.yabairc state=link force=true
+    - file: src={{ curdir }}/files/gitconfig dest=~/.gitconfig state=link force=true
+    - file: src={{ curdir }}/files/gitignore dest=~/.gitignore state=link force=true
 
     # - name: Create ~/.sshrc.d
     #   file: path=~/.sshrc.d state=directory
