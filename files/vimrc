@@ -287,6 +287,8 @@ map Q :bd<CR>                     " close buffer
 map <leader>s :w<CR>										  " save file
 map <leader>x :tabn<cr>         " Select tab to the right using k"
 map <leader>z :tabp<cr>         " Select tab to the left using j"
+map L :tabn<cr>         " Select tab to the right using k"
+map H :tabp<cr>         " Select tab to the left using j"
 
 " nmap s <Plug>(easymotion-s2)
 nmap t <Plug>(easymotion-s2)
@@ -458,6 +460,7 @@ nmap <leader>crs mQviwu`Q
 nmap <C-\> :NERDTreeFind<CR>
 nmap <leader>n :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeMapToggleFileLiness = ''
 
 " Automatically removing all trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
@@ -767,3 +770,6 @@ nnoremap <leader>gd :Gvdiffsplit!<CR>
 " nnoremap gdh :diffget //2<CR>
 nnoremap gdl :diffget LO<CR>
 nnoremap gdr :diffget RE<CR>
+
+" Normal mode: open previous opened file (after jump)
+nnoremap <leader>ab :AnyJumpBack<CR>

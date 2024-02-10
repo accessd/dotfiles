@@ -1,0 +1,62 @@
+
+.DS_Store
+# Thumbnails
+._*
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Windows   taken from: https://github.com/github/gitignore/blob/master/Global/Windows.gitignore
+# ----------------------------------------------------------------------------------------------
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Tags      taken from: https://github.com/github/gitignore/blob/master/Global/Tags.gitignore
+# ----------------------------------------------------------------------------------------------
+# Ignore tags created by etags and ctags
+TAGS
+tags
+
+# Vim       taken from: https://github.com/github/gitignore/blob/master/Global/vim.gitignore
+# ----------------------------------------------------------------------------------------------
+.*.sw[a-z]
+*.un~
+Session.vim
+
+# SASS
+# ----------------------------------------------------------------------------------------------
+.sass-cache
+/vendor/bundle
+.phptidy-cache
+# *.sql
+# logs
+brakeman
+r2r_show
+ruby_parse
+ruby_parse_extract_error
+spring
+# bin/rails
+# bin/rake
+# bin/rspec
+# bin/byebug
+junk.gdbm
+.agignore
+.ignore
+spec_screenshots*
+# .ruby-version
+vendor/bundle/*
+.bundle
+bin/rspec_spring
+npm-debug.log
+public/assets
+.gce_cache
+.python-version
+vendor/google
+
+
+# iOS
+xcshareddata
+xcuserdata
