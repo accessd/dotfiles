@@ -12,3 +12,4 @@
       file: path=~/.zsh.after state=directory
 
     - file: src={{ curdir }}/files/zsh/aliases.zsh dest=~/.zsh.after/aliases.zsh state=link force=true
+    - file: src={{ curdir }}/files/zshrc dest=~/.zshrc state=link force=true
