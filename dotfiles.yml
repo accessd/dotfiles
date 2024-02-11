@@ -8,9 +8,7 @@
     - file: src={{ curdir }}/files/gitconfig dest=~/.gitconfig state=link force=true
     - file: src={{ curdir }}/files/gitignore dest=~/.gitignore state=link force=true
 
-    # - name: Create ~/.sshrc.d
-    #   file: path=~/.sshrc.d state=directory
-    #
-    # - file: src={{ curdir }}/files/{{ item }} dest=~/.sshrc.d/{{ item }} state=link
-    #   with_items:
-    #     - LS_COLORS
+    - name: Create ~/.zsh.after
+      file: path=~/.zsh.after state=directory
+
+    - file: src={{ curdir }}/files/zsh/aliases.zsh dest=~/.zsh.after/aliases.zsh state=link force=true
