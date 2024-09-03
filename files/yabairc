@@ -87,6 +87,7 @@ yabai -m rule --add app=".*Chrome.*" space=web
 yabai -m rule --add app="^Arc$" space=web
 yabai -m rule --add app=".*Firefox.*" space=web
 yabai -m rule --add app="^Notes$" space=notes
+yabai -m rule --add app="^Obsidian$" space=notes
 yabai -m rule --add app="Toggl.*" space=misc
 yabai -m rule --add app="^Transmission$" space=misc
 yabai -m rule --add app="^Spotify$" space=spotify
@@ -138,6 +139,6 @@ yabai -m config external_bar all:28:0
 #
 # yabai -m query --spaces | jq -re 'map(.index) | reverse | .[] ' | xargs -I % sh -c 'yabai -m space % --destroy'
 
-borders active_color=0xff80eb34 inactive_color=0xff414550 width=6.0 blacklist="iTerm2" &
+borders active_color=0xff80eb34 inactive_color=0xff414550 width=6.0 blacklist="iTerm2,krisp" &
 
 echo "yabai configuration loaded.."
