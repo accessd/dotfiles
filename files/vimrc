@@ -49,7 +49,9 @@ Plug 'dkrieger/vimux'
 Plug 'christoomey/vim-tmux-navigator'
 
 " Markdown Enhancements
-"Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
+
+Plug 'vimwiki/vimwiki'
 
 " Snippets are separated from the engine
 Plug 'honza/vim-snippets'
@@ -89,6 +91,8 @@ Plug 'Valloric/MatchTagAlways'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+Plug 'yazgoo/yank-history'
+
 Plug 'bkad/CamelCaseMotion'
 
 Plug 'majutsushi/tagbar'
@@ -107,6 +111,8 @@ Plug 'hashivim/vim-terraform'
 Plug 'junegunn/vim-emoji'
 
 Plug '907th/vim-auto-save'
+
+Plug 'pasky/claude.vim'
 
 call plug#end()
 
@@ -334,8 +340,8 @@ nnoremap <silent> ss <C-w>s
 nmap <silent> // :nohlsearch<CR>
 
 " Ctrl-/ to toggle comments
-map <C-w> :TComment<CR>
-imap <C-w> <Esc>:TComment<CR>i
+map <C-/> :TComment<CR>
+imap <C-/> <Esc>:TComment<CR>i
 
 " Use Leader- numbers to pick the tab you want
 map <silent> <leader>1 :tabn 1<cr>
@@ -416,7 +422,7 @@ endif
 nmap <leader>cru mQviwU`Q
 nmap <leader>crs mQviwu`Q
 
-nmap <C-\> :NERDTreeFind<CR>
+nmap <leader>nf :NERDTreeFind<CR>
 nmap <leader>n :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
 let NERDTreeMapToggleFileLiness = ''
@@ -501,6 +507,7 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 
 nnoremap <silent> ,t :FZF!<CR>
+nnoremap <silent> ,f :FzfAg<CR>
 " nnoremap <silent> ,js :FZF spec<CR>
 
 "-------------------------------------------------------------------------------
@@ -513,7 +520,7 @@ let g:nerdtree_tabs_focus_on_files = 1
 " Make nerdtree look nice
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-let g:NERDTreeWinSize = 30
+let g:NERDTreeWinSize = 35
 
 "-------------------------------------------------------------------------------
 " Configure UltiSnips
@@ -712,8 +719,44 @@ endfunction
 " Fugitive Conflict Resolution
 nnoremap <leader>gd :Gvdiffsplit!<CR>
 " nnoremap gdh :diffget //2<CR>
-nnoremap gdl :diffget LO<CR>
-nnoremap gdr :diffget RE<CR>
+nnoremap gdl :diffget LOCAL<CR>
+nnoremap gdr :diffget REMOTE<CR>
 
 " Normal mode: open previous opened file (after jump)
 nnoremap <leader>ab :AnyJumpBack<CR>
+
+" let g:vimwiki_list = [{'path': '~/Documents/tower',
+"                       \ 'syntax': 'markdown', 'ext': 'md'}]
+
+let g:markdown_fenced_languages = [
+  \ 'bash=sh', 'javascript', 'js=javascript', 'json=javascript', 'typescript',
+  \ 'ts=typescript', 'php', 'html', 'css', 'rust', 'sql', 'python', 'go', 'ruby']
+
+let g:auto_save = 1  " enable AutoSave on Vim startup
+let g:bufExplorerShowRelativePath=1
+
+function! s:get_registers() abort
+  redir => l:regs
+  silent registers
+  redir END
+
+  return split(l:regs, '\n')[1:]
+endfunction
+
+function! s:registers(...) abort
+  let l:opts = {
+        \ 'source': s:get_registers(),
+        \ 'sink': {x -> feedkeys(matchstr(x, '\v^\S+\ze.*') . (a:1 ? 'P' : 'p'), 'x')},
+        \ 'options': '--prompt="Reg> "'
+        \ }
+  call fzf#run(fzf#wrap(l:opts))
+endfunction
+
+command! -bang Registers call s:registers('<bang>' ==# '!')
+
+nmap <leader>h :YankHistoryRgPaste<CR>
+
+" swith between buffers
+nmap <C-p> :b#<CR>
+
+let g:claude_api_key = $CLAUDE_API_KEY
