@@ -1,52 +1,56 @@
 return {
   {
-    'alexghergh/nvim-tmux-navigation',
+    'mrjones2014/smart-splits.nvim',
+    lazy = false,
     config = function()
-      require('nvim-tmux-navigation').setup {
-        keybindings = {
-          left = '<C-h>',
-          down = '<C-j>',
-          up = '<C-k>',
-          right = '<C-l>',
-          last_active = '<C-\\>',
-          next = '<C-Space>',
-        },
+      require('smart-splits').setup {
+        disable_multiplexer_nav_when_zoomed = false,
       }
+      -- moving between splits
+      vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
+      vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
+      vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
+      vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+      vim.keymap.set('n', '<C-\\>', require('smart-splits').move_cursor_previous)
+      -- swapping buffers between windows
+      vim.keymap.set('n', '<leader><leader>h', require('smart-splits').swap_buf_left)
+      vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down)
+      vim.keymap.set('n', '<leader><leader>k', require('smart-splits').swap_buf_up)
+      vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right)
     end,
   },
-
-  {
-    'chrisgrieser/nvim-spider',
-    dependencies = {
-      'theHamsta/nvim_rocks',
-      build = 'pip3 install --user hererocks && python3 -mhererocks . -j2.1.0-beta3 -r3.0.0 && cp nvim_rocks.lua lua',
-      config = function()
-        require('nvim_rocks').ensure_installed 'luautf8'
-      end,
-    },
-    config = function()
-      require('spider').setup {
-        skipInsignificantPunctuation = false,
-      }
-    end,
-    keys = {
-      {
-        'e',
-        "<cmd>lua require('spider').motion('e', { skipInsignificantPunctuation = false })<CR>",
-        mode = { 'n', 'o', 'x' },
-      },
-      {
-        'w',
-        "<cmd>lua require('spider').motion('w', { skipInsignificantPunctuation = false })<CR>",
-        mode = { 'n', 'o', 'x' },
-      },
-      {
-        'b',
-        "<cmd>lua require('spider').motion('b', { skipInsignificantPunctuation = false })<CR>",
-        mode = { 'n', 'o', 'x' },
-      },
-    },
-  },
+  -- {
+  --   'chrisgrieser/nvim-spider',
+  --   dependencies = {
+  --     'theHamsta/nvim_rocks',
+  --     build = 'pip3 install --user hererocks && python3 -mhererocks . -j2.1.0-beta3 -r3.0.0 && cp nvim_rocks.lua lua',
+  --     config = function()
+  --       require('nvim_rocks').ensure_installed 'luautf8'
+  --     end,
+  --   },
+  --   config = function()
+  --     require('spider').setup {
+  --       skipInsignificantPunctuation = false,
+  --     }
+  --   end,
+  --   keys = {
+  --     {
+  --       'e',
+  --       "<cmd>lua require('spider').motion('e', { skipInsignificantPunctuation = false })<CR>",
+  --       mode = { 'n', 'o', 'x' },
+  --     },
+  --     {
+  --       'w',
+  --       "<cmd>lua require('spider').motion('w', { skipInsignificantPunctuation = false })<CR>",
+  --       mode = { 'n', 'o', 'x' },
+  --     },
+  --     {
+  --       'b',
+  --       "<cmd>lua require('spider').motion('b', { skipInsignificantPunctuation = false })<CR>",
+  --       mode = { 'n', 'o', 'x' },
+  --     },
+  --   },
+  -- },
 
   { 'terryma/vim-expand-region' },
   { 'vim-test/vim-test' },
@@ -54,11 +58,11 @@ return {
   { 'famiu/bufdelete.nvim' },
   { 'mg979/vim-visual-multi' },
   { 'itchyny/vim-qfedit' },
-  {
-    'zeioth/garbage-day.nvim',
-    dependencies = 'neovim/nvim-lspconfig',
-    opts = {},
-  },
+  -- {
+  --   'zeioth/garbage-day.nvim',
+  --   dependencies = 'neovim/nvim-lspconfig',
+  --   opts = {},
+  -- },
 
   {
     'gbprod/yanky.nvim',
@@ -96,49 +100,6 @@ return {
       { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put After Applying a Filter' },
       { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put Before Applying a Filter' },
     },
-  },
-
-  {
-    'ThePrimeagen/harpoon',
-    branch = 'harpoon2',
-    opts = {
-      menu = {
-        width = vim.api.nvim_win_get_width(0) - 4,
-      },
-      settings = {
-        save_on_toggle = true,
-      },
-    },
-    keys = function()
-      local keys = {
-        {
-          '<leader>H',
-          function()
-            require('harpoon'):list():add()
-          end,
-          desc = 'Harpoon File',
-        },
-        {
-          '<leader>h',
-          function()
-            local harpoon = require 'harpoon'
-            harpoon.ui:toggle_quick_menu(harpoon:list())
-          end,
-          desc = 'Harpoon Quick Menu',
-        },
-      }
-
-      for i = 1, 5 do
-        table.insert(keys, {
-          '<leader>' .. i,
-          function()
-            require('harpoon'):list():select(i)
-          end,
-          desc = 'Harpoon to File ' .. i,
-        })
-      end
-      return keys
-    end,
   },
 
   {
@@ -225,77 +186,172 @@ return {
     },
   },
 
+  -- {
+  --   'tpope/vim-rails',
+  -- },
+
   {
-    'folke/zen-mode.nvim',
+    'goolord/alpha-nvim',
+    config = function()
+      require('alpha').setup(require('alpha.themes.dashboard').config)
+
+      local dashboard = require 'alpha.themes.dashboard'
+      -- Set menu
+      dashboard.section.buttons.val = {
+        dashboard.button('e', '  > New File', '<cmd>ene<CR>'),
+        dashboard.button('n', '  > Toggle file explorer', '<cmd>NvimTreeToggle<CR>'),
+        dashboard.button('sf', '󰱼  > Find File', '<cmd>Telescope find_files<CR>'),
+        dashboard.button('r', '󰁯  > Restore Session For Current Directory', '<cmd>lua require("persistence").load()<CR>'),
+        dashboard.button('q', '  > Quit NVIM', '<cmd>qa<CR>'),
+      }
+    end,
+  },
+
+  {
+    'epwalsh/obsidian.nvim',
+    version = '*', -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = 'markdown',
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+    --   -- refer to `:h file-pattern` for more examples
+    --   "BufReadPre path/to/my-vault/*.md",
+    --   "BufNewFile path/to/my-vault/*.md",
+    -- },
+    dependencies = {
+      -- Required.
+      'nvim-lua/plenary.nvim',
+    },
     opts = {
+      workspaces = {
+        {
+          name = 'personal',
+          path = '~/Documents/tower/',
+        },
+      },
+      new_notes_location = 'inbox',
+    },
+  },
+
+  {
+    'kristijanhusak/vim-dadbod-ui',
+    dependencies = {
+      { 'tpope/vim-dadbod', lazy = true },
+      { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
+    },
+    cmd = {
+      'DBUI',
+      'DBUIToggle',
+      'DBUIAddConnection',
+      'DBUIFindBuffer',
+    },
+    init = function()
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
+  },
+
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('nvim-tree').setup()
+    end,
+  },
+
+  {
+    'FabijanZulj/blame.nvim',
+    lazy = false,
+    config = function()
+      require('blame').setup {}
+    end,
+  },
+
+  {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      bigfile = { enabled = true },
+      -- dashboard = { enabled = true },
+      indent = { enabled = true },
+      input = { enabled = true },
+      bufdelete = { enabled = true },
+      notifier = { enabled = true },
+      quickfile = { enabled = true },
+      -- scroll = { enabled = true },
+      scope = { enabled = true },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
+    },
+    keys = {
       {
-        window = {
-          backdrop = 0.95, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
-          -- height and width can be:
-          -- * an absolute number of cells when > 1
-          -- * a percentage of the width / height of the editor when <= 1
-          -- * a function that returns the width or the height
-          width = 120, -- width of the Zen window
-          height = 1, -- height of the Zen window
-          -- by default, no options are changed for the Zen window
-          -- uncomment any of the options below, or add other vim.wo options you want to apply
-          options = {
-            -- signcolumn = "no", -- disable signcolumn
-            number = false, -- disable number column
-            -- relativenumber = false, -- disable relative numbers
-            cursorline = false, -- disable cursorline
-            cursorcolumn = false, -- disable cursor column
-            -- foldcolumn = "0", -- disable fold column
-            -- list = false, -- disable whitespace characters
-          },
-        },
-        plugins = {
-          -- disable some global vim options (vim.o...)
-          -- comment the lines to not apply the options
-          options = {
-            enabled = true,
-            ruler = false, -- disables the ruler text in the cmd line area
-            showcmd = false, -- disables the command in the last line of the screen
-            -- you may turn on/off statusline in zen mode by setting 'laststatus'
-            -- statusline will be shown only if 'laststatus' == 3
-            laststatus = 0, -- turn off the statusline in zen mode
-          },
-          twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
-          gitsigns = { enabled = false }, -- disables git signs
-          tmux = { enabled = true }, -- disables the tmux statusline
-          todo = { enabled = false }, -- if set to "true", todo-comments.nvim highlights will be disabled
-          -- this will change the font size on kitty when in zen mode
-          -- to make this work, you need to set the following kitty options:
-          -- - allow_remote_control socket-only
-          -- - listen_on unix:/tmp/kitty
-          kitty = {
-            enabled = false,
-            font = '+4', -- font size increment
-          },
-          -- this will change the font size on alacritty when in zen mode
-          -- requires  Alacritty Version 0.10.0 or higher
-          -- uses `alacritty msg` subcommand to change font size
-          alacritty = {
-            enabled = true,
-            font = '16', -- font size
-          },
-          -- this will change the font size on wezterm when in zen mode
-          -- See alse also the Plugins/Wezterm section in this projects README
-          wezterm = {
-            enabled = false,
-            -- can be either an absolute font size or the number of incremental steps
-            font = '+4', -- (10% increase per step)
-          },
-        },
-        -- callback where you can add custom code when the Zen window opens
-        on_open = function(win) end,
-        -- callback where you can add custom code when the Zen window closes
-        on_close = function() end,
+        '<leader>hn',
+        function()
+          Snacks.notifier.show_history()
+        end,
+        desc = 'Notification History',
+      },
+      {
+        '<leader>un',
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = 'Dismiss All Notifications',
       },
     },
   },
 
   {
-    'tpope/vim-rails',
+    'sindrets/diffview.nvim',
+  },
+  { 'danilamihailov/beacon.nvim' },
+
+  {
+    'mikavilpas/yazi.nvim',
+    event = 'VeryLazy',
+    keys = {
+      -- 👇 in this section, choose your own keymappings!
+      {
+        '<leader>-',
+        '<cmd>Yazi<cr>',
+        desc = 'Open yazi at the current file',
+      },
+      {
+        -- Open in the current working directory
+        '<leader>cw',
+        '<cmd>Yazi cwd<cr>',
+        desc = "Open the file manager in nvim's working directory",
+      },
+      {
+        -- NOTE: this requires a version of yazi that includes
+        -- https://github.com/sxyazi/yazi/pull/1305 from 2024-07-18
+        '<c-up>',
+        '<cmd>Yazi toggle<cr>',
+        desc = 'Resume the last yazi session',
+      },
+    },
+    opts = {
+      -- if you want to open yazi instead of netrw, see below for more info
+      open_for_directories = false,
+      keymaps = {
+        show_help = '<f1>',
+      },
+    },
+  },
+  {
+    'lukas-reineke/virt-column.nvim',
+    opts = {
+      char = { '┆' },
+      virtcolumn = '120',
+      highlight = { 'NonText' },
+    },
   },
 }

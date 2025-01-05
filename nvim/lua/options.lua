@@ -74,4 +74,11 @@ vim.g.VimuxUseNearest = 1
 -- Use last pane as runner
 vim.g.VimuxUseLast = 1
 
+vim.opt.conceallevel = 2
+
+vim.g.claude_api_key = os.getenv 'ANTHROPIC_API_KEY'
+
+-- Prepend mise shims to PATH
+vim.env.PATH = vim.env.HOME .. '/.local/share/mise/shims:' .. vim.env.PATH
+
 -- vim: ts=2 sts=2 sw=2 et

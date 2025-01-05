@@ -52,25 +52,26 @@ vim.keymap.set('c', '<C-j>', '<Down>', { desc = 'Next command' })
 vim.keymap.set('c', '<C-k>', '<Up>', { desc = 'Previous command' })
 
 -- Map Enter to add the new line
-vim.keymap.set('n', '<CR>', 'o<Esc>')
+-- vim.keymap.set('n', '<CR>', 'o<Esc>')
 
 -- Close buffer with Q
-vim.keymap.set('n', 'Q', ":lua require('bufdelete').bufdelete(0, true)<CR>")
+vim.keymap.set('n', 'Q', ':lua Snacks.bufdelete()<CR>')
 
 -- map("n", "<leader>fe", ":Neotree focus<CR>")
 
 -- Swith to the prev buffer
 vim.keymap.set('n', '<C-p>', ':b#<CR>')
 
-vim.keymap.set('n', '<leader>n', ':Neotree toggle<CR>', {})
--- Reveal current dir of the file in neotree
-vim.keymap.set('n', '<leader>nf', ':Neotree reveal<CR>', {})
+vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<CR>', { nowait = true })
+-- Reveal current dir of the file in nvimtree
+vim.keymap.set('n', '<leader>f', ':NvimTreeFindFile<CR>', {})
 
 -- Clear search highlights
 vim.keymap.set('n', '//', function()
   vim.cmd 'nohlsearch'
 end, {})
 
+-- run tests
 vim.keymap.set('n', '<leader>rl', ':TestNearest<CR>', {})
 vim.keymap.set('n', '<leader>rs', ':TestFile<CR>', {})
 vim.keymap.set('n', '<leader>l', ':TestLast<CR>', {})
@@ -79,7 +80,7 @@ vim.keymap.set('n', '<leader>vc', ':VimuxInterruptRunner<CR>', {})
 vim.keymap.set('n', '<leader>wi', ':VimuxInspectRunner<CR>', {})
 vim.keymap.set('n', '<leader>w', ':VimuxZoomRunner<CR>', {})
 
--- vim.keymap.set('i', '<C-h>', '<BS>', {})
+vim.keymap.set('i', '<C-h>', '<BS>', {})
 -- vim.api.nvim_set_keymap('i', '<C-h>', '<BS>', { noremap = true, silent = true })
 vim.keymap.set('i', '^H', '<BS>', { noremap = true, silent = true })
 
@@ -89,10 +90,10 @@ vim.keymap.set('n', '<leader>wm', ':MaximizerToggle<CR>', {})
 vim.keymap.set('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit All' })
 
 -- Resize window using <ctrl> arrow keys
-vim.keymap.set('n', '<C-S-Up>', '<cmd>resize +2<cr>', { desc = 'Increase Window Height' })
-vim.keymap.set('n', '<C-S-Down>', '<cmd>resize -2<cr>', { desc = 'Decrease Window Height' })
-vim.keymap.set('n', '<C-S-Left>', '<cmd>vertical resize -2<cr>', { desc = 'Decrease Window Width' })
-vim.keymap.set('n', '<C-S-Right>', '<cmd>vertical resize +2<cr>', { desc = 'Increase Window Width' })
+vim.keymap.set('n', '<C-A-Up>', '<cmd>resize +2<cr>', { desc = 'Increase Window Height' })
+vim.keymap.set('n', '<C-A-Down>', '<cmd>resize -2<cr>', { desc = 'Decrease Window Height' })
+vim.keymap.set('n', '<C-A-Left>', '<cmd>vertical resize -2<cr>', { desc = 'Decrease Window Width' })
+vim.keymap.set('n', '<C-A-Right>', '<cmd>vertical resize +2<cr>', { desc = 'Increase Window Width' })
 
 -- buffers
 vim.keymap.set('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
@@ -104,5 +105,44 @@ vim.keymap.set('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Wi
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
 vim.keymap.set('n', '<leader>ur', '<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>', { desc = 'Redraw / Clear hlsearch / Diff Update' })
+
+vim.keymap.set('n', '<leader>dl', function()
+  if vim.diagnostic.is_enabled() then
+    vim.diagnostic.enable(false)
+  else
+    vim.diagnostic.enable(true)
+  end
+end, { desc = 'toggle lint' })
+
+vim.keymap.set({ 'x' }, '<leader>cd', ':GpDiff ', { remap = true, desc = '[C]opilot rewrite to [D]iff' })
+
+function _G.gp_diff(args, line1, line2)
+  local contents = vim.api.nvim_buf_get_lines(vim.api.nvim_get_current_buf(), 0, -1, false)
+
+  vim.cmd 'vnew'
+  local scratch_buf = vim.api.nvim_get_current_buf()
+  vim.bo[scratch_buf].buftype = 'nofile'
+  vim.bo[scratch_buf].bufhidden = 'wipe'
+
+  vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, contents)
+
+  vim.cmd(line1 .. ',' .. line2 .. 'GpRewrite ' .. args)
+
+  vim.defer_fn(function()
+    vim.cmd 'diffthis'
+    vim.cmd 'wincmd p'
+    vim.cmd 'diffthis'
+  end, 1000)
+end
+
+vim.cmd 'command! -range -nargs=+ GpDiff lua gp_diff(<q-args>, <line1>, <line2>)'
+
+vim.keymap.set('n', '<leader>q', '<Cmd>edit ~/buffer<CR>', { desc = 'Quickly open a buffer for scribble' })
+
+vim.keymap.set('i', '<C-e>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false,
+})
+vim.g.copilot_no_tab_map = true
 
 -- vim: ts=2 sts=2 sw=2 et

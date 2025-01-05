@@ -23,6 +23,7 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    'suketa/nvim-dap-ruby',
   },
   keys = function(_, keys)
     local dap = require 'dap'
@@ -101,5 +102,7 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    require('dap-ruby').setup()
   end,
 }

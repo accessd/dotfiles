@@ -5,7 +5,7 @@ return {
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'ruby', 'php' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'ruby', 'php', 'go' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -33,6 +33,22 @@ return {
     config = function()
       require('nvim-treesitter.configs').setup {
         textobjects = {
+          lsp_interop = {
+            enable = true,
+            border = 'rounded',
+            floating_preview_opts = {},
+            peek_definition_code = {
+              ['<leader>lo'] = { query = '@class.outer', desc = 'Peek class', silent = true },
+              ['<leader>lp'] = { query = '@function.outer', desc = 'Peek function', silent = true },
+            },
+          },
+          move = {
+            enable = true,
+            goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer', [']a'] = '@parameter.inner' },
+            goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer', [']A'] = '@parameter.inner' },
+            goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer', ['[a'] = '@parameter.inner' },
+            goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer', ['[A'] = '@parameter.inner' },
+          },
           select = {
             enable = true,
 
@@ -44,12 +60,20 @@ return {
               ['af'] = '@function.outer',
               ['if'] = '@function.inner',
               ['ac'] = '@class.outer',
+              ['al'] = '@loop.outer',
+              ['il'] = '@loop.inner',
               -- You can optionally set descriptions to the mappings (used in the desc parameter of
               -- nvim_buf_set_keymap) which plugins like which-key display
               ['ic'] = { query = '@class.inner', desc = 'Select inner part of a class region' },
               -- You can also use captures from other query groups like `locals.scm`
               ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
             },
+            selection_modes = {
+              ['@parameter.outer'] = 'v', -- charwise
+              ['@function.outer'] = 'V', -- linewise
+              ['@class.outer'] = '<c-v>', -- blockwise
+            },
+            include_surrounding_whitespace = false,
           },
         },
       }
