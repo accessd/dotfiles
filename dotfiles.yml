@@ -1,12 +1,66 @@
 ---
 - hosts: all
   tasks:
+    # homebrew packages restoration
+    - name: Restore homebrew packages from Brewfile-backup
+      shell: brew bundle --file={{ curdir }}/Brewfile-backup
+      args:
+        warn: false
+
+    # tmux plugin manager (tpm)
+    - name: Create ~/.tmux/plugins directory
+      file: path=~/.tmux/plugins state=directory
+
+    - name: Clone tmux plugin manager (tpm)
+      git:
+        repo: https://github.com/tmux-plugins/tpm
+        dest: ~/.tmux/plugins/tpm
+        force: yes
+
+    - name: Install tmux plugins
+      shell: ~/.tmux/plugins/tpm/bin/install_plugins
+      args:
+        warn: false
+      ignore_errors: yes
+
+    # zsh configuration
+    - file: src={{ curdir }}/files/zshrc dest=~/.zshrc state=link force=true
+
+    - name: Create ~/.zsh.after directory
+      file: path=~/.zsh.after state=directory
+
+    - name: Copy zsh files to ~/.zsh.after
+      copy: src={{ curdir }}/files/zsh/ dest=~/.zsh.after/ mode=preserve
+
+    # bin directory
+    - name: Create ~/bin directory
+      file: path=~/bin state=directory
+
+    - name: Copy bin files to ~/bin
+      copy: src={{ curdir }}/files/bin/ dest=~/bin/ mode=preserve
+
+    - name: Make bin files executable
+      shell: chmod +x ~/bin/*
+      args:
+        warn: false
+
+    # neovim configuration
+    - name: Create ~/.config directory
+      file: path=~/.config state=directory
+
+    - name: Create neovim config symlink
+      file: src={{ curdir }}/nvim dest=~/.config/nvim state=link force=true
+
+    # other configuration files
     # - file: src={{ curdir }}/files/sshrc dest=~/.sshrc state=link
     - file: src={{ curdir }}/files/tmux.conf dest=~/.tmux.conf state=link force=true
     - file: src={{ curdir }}/files/skhdrc dest=~/.skhdrc state=link force=true
     - file: src={{ curdir }}/files/yabairc dest=~/.yabairc state=link force=true
     - file: src={{ curdir }}/files/gitconfig dest=~/.gitconfig state=link force=true
     - file: src={{ curdir }}/files/gitignore dest=~/.gitignore state=link force=true
+
+    - name: Create sketchybar config symlink
+      file: src={{ curdir }}/sketchybar dest=~/.config/sketchybar state=link force=true
 
     # - name: Create ~/.sshrc.d
     #   file: path=~/.sshrc.d state=directory
