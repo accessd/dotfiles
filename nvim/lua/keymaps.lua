@@ -54,6 +54,8 @@ vim.keymap.set('c', '<C-k>', '<Up>', { desc = 'Previous command' })
 -- Map Enter to add the new line
 -- vim.keymap.set('n', '<CR>', 'o<Esc>')
 
+vim.keymap.set('v', 'p', '"_dP', { desc = 'Paste without yanking' })
+
 -- Close buffer with Q
 vim.keymap.set('n', 'Q', ':lua Snacks.bufdelete()<CR>')
 
@@ -64,7 +66,7 @@ vim.keymap.set('n', '<C-p>', ':b#<CR>')
 
 vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<CR>', { nowait = true })
 -- Reveal current dir of the file in nvimtree
-vim.keymap.set('n', '<leader>f', ':NvimTreeFindFile<CR>', {})
+vim.keymap.set('n', '<leader>ff', ':NvimTreeFindFileToggle<CR>', { nowait = true })
 
 -- Clear search highlights
 vim.keymap.set('n', '//', function()
@@ -76,13 +78,22 @@ vim.keymap.set('n', '<leader>rl', ':TestNearest<CR>', {})
 vim.keymap.set('n', '<leader>rs', ':TestFile<CR>', {})
 vim.keymap.set('n', '<leader>l', ':TestLast<CR>', {})
 
+--" Combine VimuxZoomRunner and VimuxInspectRunner in one function.
+--function! VimuxZoomInspectRunner()
+--  if exists("g:VimuxRunnerIndex")
+--    call _VimuxTmux("select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
+--    call _VimuxTmux("resize-pane -Z -t ".g:VimuxRunnerIndex)
+--    call _VimuxTmux("copy-mode")
+--  endif
+--endfunction
+
 vim.keymap.set('n', '<leader>vc', ':VimuxInterruptRunner<CR>', {})
 vim.keymap.set('n', '<leader>wi', ':VimuxInspectRunner<CR>', {})
 vim.keymap.set('n', '<leader>w', ':VimuxZoomRunner<CR>', {})
 
-vim.keymap.set('i', '<C-h>', '<BS>', {})
+vim.keymap.set('i', '<C-h>', '<BS>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('i', '<C-h>', '<BS>', { noremap = true, silent = true })
-vim.keymap.set('i', '^H', '<BS>', { noremap = true, silent = true })
+-- vim.keymap.set('i', '^H', '<BS>', { noremap = true, silent = true })
 
 vim.keymap.set('n', '<leader>wm', ':MaximizerToggle<CR>', {})
 
@@ -100,7 +111,7 @@ vim.keymap.set('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 vim.keymap.set('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
 vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
-vim.keymap.set('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
+-- vim.keymap.set('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
 
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
@@ -144,5 +155,7 @@ vim.keymap.set('i', '<C-e>', 'copilot#Accept("\\<CR>")', {
   replace_keycodes = false,
 })
 vim.g.copilot_no_tab_map = true
+
+-- vim.keymap.set('n', '<leader>b', ':lua require("buvvers").toggle()<CR>')
 
 -- vim: ts=2 sts=2 sw=2 et

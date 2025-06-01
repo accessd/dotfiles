@@ -64,6 +64,9 @@ return {
             i = {
               -- ['<c-enter>'] = 'to_fuzzy_refine',
               -- ['<C-h>'] = 'which_key',
+              ['<C-k>'] = require('telescope.actions').move_selection_previous, -- move to prev result
+              ['<C-j>'] = require('telescope.actions').move_selection_next, -- move to next result
+              ['<C-l>'] = require('telescope.actions').select_default, -- open file
               ['<c-d>'] = require('telescope.actions').delete_buffer,
             },
           },
@@ -103,6 +106,11 @@ return {
           find_files = {
             hidden = true,
           },
+        },
+        live_grep = {
+          additional_args = function(_)
+            return { '--hidden' }
+          end,
         },
         extensions = {
           ['ui-select'] = {

@@ -82,23 +82,23 @@ return {
         desc = 'Open Yank History',
       },
       -- stylua: ignore
-      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank Text" },
-      { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' }, desc = 'Put Text After Cursor' },
-      { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' }, desc = 'Put Text Before Cursor' },
-      { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' }, desc = 'Put Text After Selection' },
-      { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' }, desc = 'Put Text Before Selection' },
-      { '[y', '<Plug>(YankyCycleForward)', desc = 'Cycle Forward Through Yank History' },
-      { ']y', '<Plug>(YankyCycleBackward)', desc = 'Cycle Backward Through Yank History' },
-      { ']p', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put Indented After Cursor (Linewise)' },
-      { '[p', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put Indented Before Cursor (Linewise)' },
-      { ']P', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put Indented After Cursor (Linewise)' },
-      { '[P', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put Indented Before Cursor (Linewise)' },
-      { '>p', '<Plug>(YankyPutIndentAfterShiftRight)', desc = 'Put and Indent Right' },
-      { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)', desc = 'Put and Indent Left' },
+      { "y",  "<Plug>(YankyYank)",                      mode = { "n", "x" },                           desc = "Yank Text" },
+      { 'p',  '<Plug>(YankyPutAfter)',                  mode = { 'n', 'x' },                           desc = 'Put Text After Cursor' },
+      { 'P',  '<Plug>(YankyPutBefore)',                 mode = { 'n', 'x' },                           desc = 'Put Text Before Cursor' },
+      { 'gp', '<Plug>(YankyGPutAfter)',                 mode = { 'n', 'x' },                           desc = 'Put Text After Selection' },
+      { 'gP', '<Plug>(YankyGPutBefore)',                mode = { 'n', 'x' },                           desc = 'Put Text Before Selection' },
+      { '[y', '<Plug>(YankyCycleForward)',              desc = 'Cycle Forward Through Yank History' },
+      { ']y', '<Plug>(YankyCycleBackward)',             desc = 'Cycle Backward Through Yank History' },
+      { ']p', '<Plug>(YankyPutIndentAfterLinewise)',    desc = 'Put Indented After Cursor (Linewise)' },
+      { '[p', '<Plug>(YankyPutIndentBeforeLinewise)',   desc = 'Put Indented Before Cursor (Linewise)' },
+      { ']P', '<Plug>(YankyPutIndentAfterLinewise)',    desc = 'Put Indented After Cursor (Linewise)' },
+      { '[P', '<Plug>(YankyPutIndentBeforeLinewise)',   desc = 'Put Indented Before Cursor (Linewise)' },
+      { '>p', '<Plug>(YankyPutIndentAfterShiftRight)',  desc = 'Put and Indent Right' },
+      { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)',   desc = 'Put and Indent Left' },
       { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)', desc = 'Put Before and Indent Right' },
-      { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)', desc = 'Put Before and Indent Left' },
-      { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put After Applying a Filter' },
-      { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put Before Applying a Filter' },
+      { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)',  desc = 'Put Before and Indent Left' },
+      { '=p', '<Plug>(YankyPutAfterFilter)',            desc = 'Put After Applying a Filter' },
+      { '=P', '<Plug>(YankyPutBeforeFilter)',           desc = 'Put Before Applying a Filter' },
     },
   },
 
@@ -106,8 +106,8 @@ return {
     'ggandor/leap.nvim',
     enabled = true,
     keys = {
-      { 's', mode = { 'n', 'x', 'o' }, desc = 'Leap Forward to' },
-      { 'S', mode = { 'n', 'x', 'o' }, desc = 'Leap Backward to' },
+      { 's',  mode = { 'n', 'x', 'o' }, desc = 'Leap Forward to' },
+      { 'S',  mode = { 'n', 'x', 'o' }, desc = 'Leap Backward to' },
       { 'gs', mode = { 'n', 'x', 'o' }, desc = 'Leap from Windows' },
     },
     config = function(_, opts)
@@ -126,7 +126,7 @@ return {
   -- search/replace in multiple files
   {
     'MagicDuck/grug-far.nvim',
-    opts = { headerMaxWidth = 80 },
+    opts = { headerMaxWidth = 80, maxLineLength = 10000 },
     cmd = 'GrugFar',
     keys = {
       {
@@ -156,10 +156,10 @@ return {
     opts = {},
     -- stylua: ignore
     keys = {
-      { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
-      { "<leader>qS", function() require("persistence").select() end,desc = "Select Session" },
+      { "<leader>qs", function() require("persistence").load() end,                desc = "Restore Session" },
+      { "<leader>qS", function() require("persistence").select() end,              desc = "Select Session" },
       { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
-      { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+      { "<leader>qd", function() require("persistence").stop() end,                desc = "Don't Save Current Session" },
     },
   },
 
@@ -235,22 +235,22 @@ return {
     },
   },
 
-  {
-    'kristijanhusak/vim-dadbod-ui',
-    dependencies = {
-      { 'tpope/vim-dadbod', lazy = true },
-      { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
-    },
-    cmd = {
-      'DBUI',
-      'DBUIToggle',
-      'DBUIAddConnection',
-      'DBUIFindBuffer',
-    },
-    init = function()
-      vim.g.db_ui_use_nerd_fonts = 1
-    end,
-  },
+  -- {
+  --   'kristijanhusak/vim-dadbod-ui',
+  --   dependencies = {
+  --     { 'tpope/vim-dadbod', lazy = true },
+  --     { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
+  --   },
+  --   cmd = {
+  --     'DBUI',
+  --     'DBUIToggle',
+  --     'DBUIAddConnection',
+  --     'DBUIFindBuffer',
+  --   },
+  --   init = function()
+  --     vim.g.db_ui_use_nerd_fonts = 1
+  --   end,
+  -- },
 
   {
     'nvim-tree/nvim-tree.lua',
@@ -281,7 +281,7 @@ return {
       -- refer to the configuration section below
       bigfile = { enabled = true },
       -- dashboard = { enabled = true },
-      indent = { enabled = true },
+      -- indent = { enabled = true },
       input = { enabled = true },
       bufdelete = { enabled = true },
       notifier = { enabled = true },
@@ -312,7 +312,7 @@ return {
   {
     'sindrets/diffview.nvim',
   },
-  { 'danilamihailov/beacon.nvim' },
+  -- { 'danilamihailov/beacon.nvim' },
 
   {
     'mikavilpas/yazi.nvim',
@@ -354,4 +354,35 @@ return {
       highlight = { 'NonText' },
     },
   },
+  {
+    "lukas-reineke/headlines.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("headlines").setup({
+        markdown = {
+          headline_highlights = {
+            "Headline1",
+            "Headline2",
+            "Headline3",
+            "Headline4",
+            "Headline5",
+            "Headline6",
+          },
+          bullets = {},
+          codeblock_highlight = "CodeBlock",
+          dash_highlight = "Dash",
+          quote_highlight = "Quote",
+        },
+      })
+    end,
+  },
+  -- {
+  --   'aidancz/buvvers.nvim',
+  --   config = function()
+  --     require("buvvers").setup()
+  --   end,
+  -- }
+  -- {
+  --   'chaoren/vim-wordmotion',
+  -- },
 }

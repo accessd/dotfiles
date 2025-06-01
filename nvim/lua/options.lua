@@ -74,6 +74,9 @@ vim.g.VimuxUseNearest = 1
 -- Use last pane as runner
 vim.g.VimuxUseLast = 1
 
+-- vim.g.VimuxRunnerType = "window"
+-- vim.g.VimuxRunnerName = "specs"
+
 vim.opt.conceallevel = 2
 
 vim.g.claude_api_key = os.getenv 'ANTHROPIC_API_KEY'
