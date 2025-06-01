@@ -119,10 +119,16 @@ email = accessd0@gmail.com
   default = current
 [core]
   autocrlf = false
-  editor = vim
+  editor = nvim
   excludesfile = ~/.yadr/git/gitignore
-	filemode = false
+  filemode = false
   pager = delta
+	preloadindex = true
+	fsmonitor = true
+	untrackedcache = true
+	packedGitLimit = 512m
+	packedGitWindowSize = 512m
+	bigFileThreshold = 50m
 [advice]
   statusHints = false
 #[diff]
@@ -146,29 +152,32 @@ email = accessd0@gmail.com
 [mergetool]
   keepBackup = false
   prompt = false
-[diff]
-  # tool = diffmerge
-  colorMoved = default
-[difftool "diffmerge"]
-  cmd = diffmerge $LOCAL $REMOTE
+; [diff]
+;   # tool = diffmerge
+;   colorMoved = default
+; [difftool "diffmerge"]
+;   cmd = diffmerge $LOCAL $REMOTE
 [pager]
   branch = false
 
-[interactive]
-  diffFilter = delta --color-only
+; [interactive]
+  ; diffFilter = delta --color-only
 
-[delta]
-    navigate = true
-    features = decorations
-
-[delta "interactive"]
-    keep-plus-minus-markers = false
-
-[delta "decorations"]
-    commit-decoration-style = blue ol
-    commit-style = raw
-    file-style = omit
-    hunk-header-decoration-style = blue box
-    hunk-header-file-style = red
-    hunk-header-line-number-style = "#067a00"
-    hunk-header-style = file line-number syntax
+; [delta]
+;     navigate = true
+;     features = decorations
+;
+; [delta "interactive"]
+;     keep-plus-minus-markers = false
+;
+; [delta "decorations"]
+;     commit-decoration-style = blue ol
+;     commit-style = raw
+;     file-style = omit
+;     hunk-header-decoration-style = blue box
+;     hunk-header-file-style = red
+;     hunk-header-line-number-style = "#067a00"
+;     hunk-header-style = file line-number syntax
+[pack]
+	windowMemory = 100m
+	packSizeLimit = 100m
