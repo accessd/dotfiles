@@ -58,6 +58,7 @@
     - file: src={{ curdir }}/files/yabairc dest=~/.yabairc state=link force=true
     - file: src={{ curdir }}/files/gitconfig dest=~/.gitconfig state=link force=true
     - file: src={{ curdir }}/files/gitignore dest=~/.gitignore state=link force=true
+    - file: src={{ curdir }}/files/wezterm.lua dest=~/.wezterm.lua state=link force=true
 
     - name: Create sketchybar config symlink
       file: src={{ curdir }}/sketchybar dest=~/.config/sketchybar state=link force=true
