@@ -62,6 +62,11 @@
     - name: Create sketchybar config symlink
       file: src={{ curdir }}/sketchybar dest=~/.config/sketchybar state=link force=true
 
+    # karabiner configuration
+    - name: Create ~/.config/karabiner directory
+      file: path=~/.config/karabiner state=directory
+    - file: src={{ curdir }}/files/karabiner.json dest=~/.config/karabiner/karabiner.json state=link force=true
+
     # - name: Create ~/.sshrc.d
     #   file: path=~/.sshrc.d state=directory
     #
