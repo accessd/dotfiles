@@ -2,10 +2,8 @@
 - hosts: all
   tasks:
     # homebrew packages restoration
-    - name: Restore homebrew packages from Brewfile-backup
-      shell: brew bundle --file={{ curdir }}/Brewfile-backup
-      args:
-        warn: false
+    # - name: Restore homebrew packages from Brewfile-backup
+    #   shell: brew bundle --file={{ curdir }}/Brewfile-backup
 
     # tmux plugin manager (tpm)
     - name: Create ~/.tmux/plugins directory
@@ -19,8 +17,6 @@
 
     - name: Install tmux plugins
       shell: ~/.tmux/plugins/tpm/bin/install_plugins
-      args:
-        warn: false
       ignore_errors: yes
 
     # zsh configuration
@@ -41,8 +37,6 @@
 
     - name: Make bin files executable
       shell: chmod +x ~/bin/*
-      args:
-        warn: false
 
     # neovim configuration
     - name: Create ~/.config directory
