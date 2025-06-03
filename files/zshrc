@@ -11,11 +11,11 @@ zvm_config() {
 }
 
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+# export ZSH=$HOME/.oh-my-zsh
 DEFAULT_USER="accessd"
 
 # Set name of the theme to load
-ZSH_THEME="dracula"
+# ZSH_THEME="dracula"
 
 plugins=(
  # git
@@ -69,9 +69,8 @@ printf "\e[?1042l"
 PROMPT='%f%F{43}la%f%F{44}pt%f%F{38}op%f%F{44}:%1~/%f %F{44}%#%f '
 
 
-# zprof
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # https://github.com/agkozak/zsh-z
 source ~/bin/zsh-z.plugin.zsh
@@ -112,7 +111,7 @@ export NVM_DIR="$HOME/.nvm"
 # eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 # source /usr/local/opt/spaceship/spaceship.zsh
-eval "$(~/.local/bin/mise activate zsh)"
+eval "$(mise activate zsh)"
 
 # opencode
 export PATH=/Users/accessd/.opencode/bin:$PATH

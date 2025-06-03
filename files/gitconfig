@@ -120,7 +120,7 @@ email = accessd0@gmail.com
 [core]
   autocrlf = false
   editor = nvim
-  excludesfile = ~/.yadr/git/gitignore
+  excludesfile = ~/.gitignore
   filemode = false
   pager = delta
 	preloadindex = true
