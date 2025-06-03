@@ -80,25 +80,25 @@ yabai -m space 9 --label misc
 yabai -m config --space mail  layout        stack
 
 # window rules
-yabai -m rule --add app="^iTerm2$" space=code
-yabai -m rule --add app="^Alacritty$" space=code
-yabai -m rule --add app="^Wezterm$" space=code
-yabai -m rule --add app="^Mail$" space=mail
-yabai -m rule --add app="^Safari$" space=web
-yabai -m rule --add app=".*Chrome.*" space=web
-yabai -m rule --add app="^Arc$" space=web
-yabai -m rule --add app=".*Firefox.*" space=web
-yabai -m rule --add app="^Notes$" space=notes
-yabai -m rule --add app="^Obsidian$" space=notes
-yabai -m rule --add app="Toggl.*" space=misc
-yabai -m rule --add app="^Transmission$" space=misc
-yabai -m rule --add app="^Spotify$" space=spotify
-yabai -m rule --add app="^Slack$" space=slack #grid=1:1:0:0:1:1 #manage=off
-yabai -m rule --add app="^Telegram$" space=telegram #grid=1:1:0:0:1:1 #manage=off
-yabai -m rule --add app="^Skype$" space=skype #grid=1:1:0:0:1:1 #manage=off
-yabai -m rule --add app=".*zoom.*" space=misc #grid=1:1:0:0:1:1 #manage=off
-yabai -m rule --add app="^.*Tunnel.*$" space=misc
-yabai -m rule --add app="^.*VPN.*$" space=misc
+# yabai -m rule --add app="^iTerm2$" space=code
+# yabai -m rule --add app="^Alacritty$" space=code
+# yabai -m rule --add app="^Wezterm$" space=code
+# yabai -m rule --add app="^Mail$" space=mail
+# yabai -m rule --add app="^Safari$" space=web
+# yabai -m rule --add app=".*Chrome.*" space=web
+# yabai -m rule --add app="^Arc$" space=web
+# yabai -m rule --add app=".*Firefox.*" space=web
+# yabai -m rule --add app="^Notes$" space=notes
+# yabai -m rule --add app="^Obsidian$" space=notes
+# yabai -m rule --add app="Toggl.*" space=misc
+# yabai -m rule --add app="^Transmission$" space=misc
+# yabai -m rule --add app="^Spotify$" space=spotify
+# yabai -m rule --add app="^Slack$" space=slack #grid=1:1:0:0:1:1 #manage=off
+# yabai -m rule --add app="^Telegram$" space=telegram #grid=1:1:0:0:1:1 #manage=off
+# yabai -m rule --add app="^Skype$" space=skype #grid=1:1:0:0:1:1 #manage=off
+# yabai -m rule --add app=".*zoom.*" space=misc #grid=1:1:0:0:1:1 #manage=off
+# yabai -m rule --add app="^.*Tunnel.*$" space=misc
+# yabai -m rule --add app="^.*VPN.*$" space=misc
 
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
