@@ -2,7 +2,7 @@ echo "Finder: show all filename extensions"
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
 echo "show hidden files by default"
-defaults write com.apple.Finder AppleShowAllFiles -bool false
+defaults write com.apple.Finder AppleShowAllFiles -bool true
 
 echo "expand save dialog by default"
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
