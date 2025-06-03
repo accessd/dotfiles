@@ -55,7 +55,7 @@
     - file: src={{ curdir }}/files/wezterm.lua dest=~/.wezterm.lua state=link force=true
 
     - name: Create sketchybar config symlink
-      file: src={{ curdir }}/sketchybar dest=~/.config/sketchybar state=link force=true
+      file: src={{ curdir }}/files/sketchybar dest=~/.config/sketchybar state=link force=true
 
     # karabiner configuration
     - name: Create ~/.config/karabiner directory
