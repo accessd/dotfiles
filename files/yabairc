@@ -38,67 +38,57 @@ yabai -m config window_gap                   15
 
 # mission-control desktop labels
 
-yabai -m query --spaces | jq -re 'map(.index) | reverse | .[] ' | xargs -I % sh -c 'yabai -m space % --destroy'
-
 yabai -m space 1 --label code
-# rename_space 1 code
 
 yabai -m space --create
 yabai -m space 2 --label web
-# rename_space 2 web
 
 yabai -m space --create
 yabai -m space 3 --label mail
-# rename_space 3 mail
 
 yabai -m space --create
 yabai -m space 4 --label notes
-# rename_space 4 spotify
 
 yabai -m space --create
 yabai -m space 5 --label spotify
-# rename_space 5 notes
 
 yabai -m space --create
 yabai -m space 6 --label telegram
-# rename_space 6 telegram
 
 yabai -m space --create
-yabai -m space 7 --label skype
-# rename_space 7 skype
+yabai -m space 7 --label teams
 
 yabai -m space --create
 yabai -m space 8 --label slack
-# rename_space 8 slack
 
 yabai -m space --create
 yabai -m space 9 --label misc
-# rename_space 9 misc
 
 
 # specific space settings
 yabai -m config --space mail  layout        stack
 
 # window rules
-# yabai -m rule --add app="^iTerm2$" space=code
-# yabai -m rule --add app="^Alacritty$" space=code
-# yabai -m rule --add app="^Wezterm$" space=code
-# yabai -m rule --add app="^Mail$" space=mail
-# yabai -m rule --add app="^Safari$" space=web
-# yabai -m rule --add app=".*Chrome.*" space=web
-# yabai -m rule --add app="^Arc$" space=web
-# yabai -m rule --add app=".*Firefox.*" space=web
-# yabai -m rule --add app="^Notes$" space=notes
-# yabai -m rule --add app="^Obsidian$" space=notes
-# yabai -m rule --add app="Toggl.*" space=misc
-# yabai -m rule --add app="^Transmission$" space=misc
-# yabai -m rule --add app="^Spotify$" space=spotify
-# yabai -m rule --add app="^Slack$" space=slack #grid=1:1:0:0:1:1 #manage=off
-# yabai -m rule --add app="^Telegram$" space=telegram #grid=1:1:0:0:1:1 #manage=off
-# yabai -m rule --add app="^Skype$" space=skype #grid=1:1:0:0:1:1 #manage=off
-# yabai -m rule --add app=".*zoom.*" space=misc #grid=1:1:0:0:1:1 #manage=off
-# yabai -m rule --add app="^.*Tunnel.*$" space=misc
-# yabai -m rule --add app="^.*VPN.*$" space=misc
+yabai -m rule --add app="^iTerm2$" space=code
+yabai -m rule --add app="^Alacritty$" space=code
+yabai -m rule --add app="^Wezterm$" space=code
+yabai -m rule --add app="^Mail$" space=mail
+yabai -m rule --add app="^Safari$" space=web
+yabai -m rule --add app=".*Chrome.*" space=web
+yabai -m rule --add app="^Arc$" manage=on
+yabai -m rule --add app="^Arc$" space=web
+yabai -m rule --add app=".*Firefox.*" space=web
+yabai -m rule --add app="^Notes$" space=notes
+yabai -m rule --add app="^Obsidian$" space=notes
+yabai -m rule --add app="Toggl.*" space=misc
+yabai -m rule --add app="^Transmission$" space=misc
+yabai -m rule --add app="^Spotify$" space=spotify
+yabai -m rule --add app="^Slack$" space=slack #grid=1:1:0:0:1:1 #manage=off
+yabai -m rule --add app="^Telegram$" space=telegram #grid=1:1:0:0:1:1 #manage=off
+yabai -m rule --add app=".*Teams.*" space=misc #grid=1:1:0:0:1:1 #manage=off
+yabai -m rule --add app=".*zoom.*" space=misc #grid=1:1:0:0:1:1 #manage=off
+yabai -m rule --add app="^.*Tunnel.*$" space=misc
+yabai -m rule --add app="^.*VPN.*$" space=misc
 
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
@@ -111,33 +101,8 @@ yabai -m rule --add label="Dictionary" app="^Dictionary$" manage=off
 yabai -m rule --add label="Software Update" title="Software Update" manage=off
 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
 yabai -m rule --add label="1Password" app="^1Password$" manage=off
-yabai -m rule --add label="Around" app="^Around$" manage=off
+yabai -m rule --add label="eqMac" app="^eqMac$" manage=off
 
-# signals
-yabai -m signal --add event=window_destroyed active=yes action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
-# yabai -m signal --add event=window_destroyed action="echo \"destroyed window with id \$YABAI_WINDOW_ID\""
-# yabai -m signal --add event=space_changed action="echo \"changed space \$YABAI_RECENT_SPACE_ID -> \$YABAI_SPACE_ID\""
-# yabai -m signal --add event=space_changed action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
-yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
-
-# sketchybar
-yabai -m signal --add event=window_focused action="sketchybar --trigger window_focus"
-yabai -m signal --add event=window_created action="sketchybar --trigger windows_on_spaces"
-yabai -m signal --add event=window_destroyed action="sketchybar --trigger windows_on_spaces"
-
-# Clean up empty spaces with no windows on them.
-yabai -m signal --add event=space_changed action="sh ~/bin/cleanEmptySpaces.sh"
-
-~/bin/cleanEmptySpaces.sh
-
-# yabai -m query --spaces --display | \
-#      jq -re 'map(select(."native-fullscreen" == 0)) | length > 1' \
-#      && yabai -m query --spaces | \
-#           jq -re 'map(select(."windows" == [] and ."focused" == 0).index) | reverse | .[] ' | \
-#           xargs -I % sh -c 'yabai -m space % --destroy'
-#
-# yabai -m query --spaces | jq -re 'map(.index) | reverse | .[] ' | xargs -I % sh -c 'yabai -m space % --destroy'
-
-# borders active_color=0xff80eb34 inactive_color=0xff414550 width=6.0 blacklist="iTerm2,krisp" &
+yabai -m rule --apply
 
 echo "yabai configuration loaded.."
