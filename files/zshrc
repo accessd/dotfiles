@@ -66,7 +66,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#33859d,bold"
 
 printf "\e[?1042l"
 
-PROMPT='%f%F{43}la%f%F{44}pt%f%F{38}op%f%F{44}:%1~/%f %F{44}%#%f '
+# PROMPT='%f%F{43}la%f%F{44}pt%f%F{38}op%f%F{44}:%1~/%f %F{44}%#%f '
 
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -108,7 +108,7 @@ export NVM_DIR="$HOME/.nvm"
 
 #eval "$(mise activate zsh)" # this sets up interactive sessions
 
-# eval "$(starship init zsh)"
+eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 # source /usr/local/opt/spaceship/spaceship.zsh
 eval "$(mise activate zsh)"
