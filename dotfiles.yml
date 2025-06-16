@@ -1,10 +1,6 @@
 ---
 - hosts: all
   tasks:
-    # homebrew packages restoration
-    # - name: Restore homebrew packages from Brewfile-backup
-    #   shell: brew bundle --file={{ curdir }}/Brewfile-backup
-
     # tmux plugin manager (tpm)
     - name: Create ~/.tmux/plugins directory
       file: path=~/.tmux/plugins state=directory
@@ -61,6 +57,9 @@
     - name: Create ~/.config/karabiner directory
       file: path=~/.config/karabiner state=directory
     - file: src={{ curdir }}/files/karabiner.json dest=~/.config/karabiner/karabiner.json state=link force=true
+
+    - name: Link psql
+      shell: brew link --force libpq
 
     # - name: Create ~/.sshrc.d
     #   file: path=~/.sshrc.d state=directory
