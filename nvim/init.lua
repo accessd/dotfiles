@@ -44,6 +44,8 @@ require 'lazy-bootstrap'
 -- [[ Configure and install plugins ]]
 require 'lazy-plugins'
 
+require 'custom.select_and_search'
+
 vim.cmd 'source ~/.config/nvim/vim.vim'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
