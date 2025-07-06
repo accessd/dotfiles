@@ -117,7 +117,7 @@ return {
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
@@ -183,6 +183,21 @@ return {
         --
 
         solargraph = {},
+        -- ruby_lsp = {
+        --   cmd = { 'docker exec -it 62ae5c7e2a61 /gems/bin/ruby-lsp' }, -- { '~/bin/auto-ruby-lsp' }, -- If you installed it with Mason, this is not needed
+        --   filetypes = { 'ruby' },
+        --   capabilities = capabilities,
+        --   settings = {
+        --     rubyLsp = {
+        --       format = {
+        --         enable = true,
+        --       },
+        --       diagnostics = {
+        --         enable = true,
+        --       },
+        --     },
+        --   },
+        -- },
         intelephense = {},
         gopls = {},
         lua_ls = {
@@ -201,6 +216,11 @@ return {
         },
       }
 
+      -- require'lspconfig'.ruby_lsp.setup({
+      --   cmd = {
+      --     'docker exec -it 62ae5c7e2a61 /gems/bin/ruby-lsp'
+      --   }
+      -- })
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -215,7 +235,8 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'intelephense',
-        'solargraph',
+        -- 'ruby-lsp',
+        -- 'solargraph',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -204,6 +204,10 @@ return {
         dashboard.button('r', '󰁯  > Restore Session For Current Directory', '<cmd>lua require("persistence").load()<CR>'),
         dashboard.button('q', '  > Quit NVIM', '<cmd>qa<CR>'),
       }
+
+      dashboard.section.footer.val = function()
+        return vim.fn.getcwd()
+      end
     end,
   },
 
@@ -376,6 +380,13 @@ return {
       })
     end,
   },
+  {
+    'dgagn/diagflow.nvim',
+    opts = {
+      placement = 'inline', -- 'top'
+      inline_padding_left = 3,
+    },
+  }
   -- {
   --   'aidancz/buvvers.nvim',
   --   config = function()

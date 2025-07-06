@@ -4,7 +4,14 @@ return {
   },
 
   {
-    'pasky/claude.vim',
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      { "github/copilot.vim" },
+      { "nvim-lua/plenary.nvim" },
+    },
+    build = "make tiktoken",
+    opts = {
+    },
   },
 
   {
@@ -94,14 +101,14 @@ return {
             model = { model = 'gpt-4o', temperature = 1.1, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = 'You are a general AI assistant.\n\n'
-              .. 'The user provided the additional info about how they would like you to respond:\n\n'
-              .. "- If you're unsure don't guess and say you don't know instead.\n"
-              .. '- Ask question if you need clarification to provide better answer.\n'
-              .. '- Think deeply and carefully from first principles step by step.\n'
-              .. '- Zoom out first to see the big picture and then zoom in to details.\n'
-              .. '- Use Socratic method to improve your thinking and coding skills.\n'
-              .. "- Don't elide any code from your output if the answer requires coding.\n"
-              .. "- Take a deep breath; You've got this!\n",
+                .. 'The user provided the additional info about how they would like you to respond:\n\n'
+                .. "- If you're unsure don't guess and say you don't know instead.\n"
+                .. '- Ask question if you need clarification to provide better answer.\n'
+                .. '- Think deeply and carefully from first principles step by step.\n'
+                .. '- Zoom out first to see the big picture and then zoom in to details.\n'
+                .. '- Use Socratic method to improve your thinking and coding skills.\n'
+                .. "- Don't elide any code from your output if the answer requires coding.\n"
+                .. "- Take a deep breath; You've got this!\n",
           },
           {
             name = 'CodeGPT4',
@@ -111,8 +118,8 @@ return {
             model = { model = 'gpt-4o', temperature = 0.8, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = 'You are an AI working as a code editor.\n\n'
-              .. 'Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n'
-              .. 'START AND END YOUR ANSWER WITH:\n\n```',
+                .. 'Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n'
+                .. 'START AND END YOUR ANSWER WITH:\n\n```',
           },
           {
             name = 'Claude4Sonnet',
@@ -121,22 +128,22 @@ return {
             provider = 'anthropic',
             model = { model = 'claude-sonnet-4-20250514' },
             system_prompt = 'You are a general AI assistant.\n\n'
-              .. 'The user provided the additional info about how they would like you to respond:\n\n'
-              .. "- If you're unsure don't guess and say you don't know instead.\n"
-              .. '- Ask question if you need clarification to provide better answer.\n'
-              .. '- Think deeply and carefully from first principles step by step.\n'
-              .. '- Zoom out first to see the big picture and then zoom in to details.\n'
-              .. '- Use Socratic method to improve your thinking and coding skills.\n'
-              .. "- Don't elide any code from your output if the answer requires coding.\n"
-              .. "- Take a deep breath; You've got this!\n",
+                .. 'The user provided the additional info about how they would like you to respond:\n\n'
+                .. "- If you're unsure don't guess and say you don't know instead.\n"
+                .. '- Ask question if you need clarification to provide better answer.\n'
+                .. '- Think deeply and carefully from first principles step by step.\n'
+                .. '- Zoom out first to see the big picture and then zoom in to details.\n'
+                .. '- Use Socratic method to improve your thinking and coding skills.\n'
+                .. "- Don't elide any code from your output if the answer requires coding.\n"
+                .. "- Take a deep breath; You've got this!\n",
           },
         },
         hooks = {
           -- example of usig enew as a function specifying type for the new buffer
           CodeReview = function(gp, params)
             local template = 'I have the following code from {{filename}}:\n\n'
-              .. '```{{filetype}}\n{{selection}}\n```\n\n'
-              .. 'Please analyze for code smells and suggest improvements.'
+                .. '```{{filetype}}\n{{selection}}\n```\n\n'
+                .. 'Please analyze for code smells and suggest improvements.'
             local agent = gp.get_chat_agent()
             gp.Prompt(params, gp.Target.enew 'markdown', agent, template)
           end,
@@ -229,165 +236,36 @@ return {
           mode = { 'i' },
           nowait = true,
           remap = false,
-          { '<C-g><C-t>', '<cmd>GpChatNew tabnew<cr>', desc = 'New Chat tabnew' },
-          { '<C-g><C-v>', '<cmd>GpChatNew vsplit<cr>', desc = 'New Chat vsplit' },
-          { '<C-g><C-x>', '<cmd>GpChatNew split<cr>', desc = 'New Chat split' },
-          { '<C-g>a', '<cmd>GpAppend<cr>', desc = 'Append (after)' },
-          { '<C-g>b', '<cmd>GpPrepend<cr>', desc = 'Prepend (before)' },
-          { '<C-g>c', '<cmd>GpChatNew<cr>', desc = 'New Chat' },
-          { '<C-g>f', '<cmd>GpChatFinder<cr>', desc = 'Chat Finder' },
-          { '<C-g>g', group = 'generate into new ..' },
-          { '<C-g>ge', '<cmd>GpEnew<cr>', desc = 'GpEnew' },
-          { '<C-g>gn', '<cmd>GpNew<cr>', desc = 'GpNew' },
-          { '<C-g>gp', '<cmd>GpPopup<cr>', desc = 'Popup' },
-          { '<C-g>gt', '<cmd>GpTabnew<cr>', desc = 'GpTabnew' },
-          { '<C-g>gv', '<cmd>GpVnew<cr>', desc = 'GpVnew' },
-          { '<C-g>n', '<cmd>GpNextAgent<cr>', desc = 'Next Agent' },
-          { '<C-g>r', '<cmd>GpRewrite<cr>', desc = 'Inline Rewrite' },
-          { '<C-g>s', '<cmd>GpStop<cr>', desc = 'GpStop' },
-          { '<C-g>t', '<cmd>GpChatToggle<cr>', desc = 'Toggle Chat' },
-          { '<C-g>w', group = 'Whisper' },
-          { '<C-g>wa', '<cmd>GpWhisperAppend<cr>', desc = 'Whisper Append (after)' },
-          { '<C-g>wb', '<cmd>GpWhisperPrepend<cr>', desc = 'Whisper Prepend (before)' },
-          { '<C-g>we', '<cmd>GpWhisperEnew<cr>', desc = 'Whisper Enew' },
-          { '<C-g>wn', '<cmd>GpWhisperNew<cr>', desc = 'Whisper New' },
-          { '<C-g>wp', '<cmd>GpWhisperPopup<cr>', desc = 'Whisper Popup' },
-          { '<C-g>wr', '<cmd>GpWhisperRewrite<cr>', desc = 'Whisper Inline Rewrite' },
-          { '<C-g>wt', '<cmd>GpWhisperTabnew<cr>', desc = 'Whisper Tabnew' },
-          { '<C-g>wv', '<cmd>GpWhisperVnew<cr>', desc = 'Whisper Vnew' },
-          { '<C-g>ww', '<cmd>GpWhisper<cr>', desc = 'Whisper' },
-          { '<C-g>x', '<cmd>GpContext<cr>', desc = 'Toggle GpContext' },
+          { '<C-g><C-t>', '<cmd>GpChatNew tabnew<cr>',   desc = 'New Chat tabnew' },
+          { '<C-g><C-v>', '<cmd>GpChatNew vsplit<cr>',   desc = 'New Chat vsplit' },
+          { '<C-g><C-x>', '<cmd>GpChatNew split<cr>',    desc = 'New Chat split' },
+          { '<C-g>a',     '<cmd>GpAppend<cr>',           desc = 'Append (after)' },
+          { '<C-g>b',     '<cmd>GpPrepend<cr>',          desc = 'Prepend (before)' },
+          { '<C-g>c',     '<cmd>GpChatNew<cr>',          desc = 'New Chat' },
+          { '<C-g>f',     '<cmd>GpChatFinder<cr>',       desc = 'Chat Finder' },
+          { '<C-g>g',     group = 'generate into new ..' },
+          { '<C-g>ge',    '<cmd>GpEnew<cr>',             desc = 'GpEnew' },
+          { '<C-g>gn',    '<cmd>GpNew<cr>',              desc = 'GpNew' },
+          { '<C-g>gp',    '<cmd>GpPopup<cr>',            desc = 'Popup' },
+          { '<C-g>gt',    '<cmd>GpTabnew<cr>',           desc = 'GpTabnew' },
+          { '<C-g>gv',    '<cmd>GpVnew<cr>',             desc = 'GpVnew' },
+          { '<C-g>n',     '<cmd>GpNextAgent<cr>',        desc = 'Next Agent' },
+          { '<C-g>r',     '<cmd>GpRewrite<cr>',          desc = 'Inline Rewrite' },
+          { '<C-g>s',     '<cmd>GpStop<cr>',             desc = 'GpStop' },
+          { '<C-g>t',     '<cmd>GpChatToggle<cr>',       desc = 'Toggle Chat' },
+          { '<C-g>w',     group = 'Whisper' },
+          { '<C-g>wa',    '<cmd>GpWhisperAppend<cr>',    desc = 'Whisper Append (after)' },
+          { '<C-g>wb',    '<cmd>GpWhisperPrepend<cr>',   desc = 'Whisper Prepend (before)' },
+          { '<C-g>we',    '<cmd>GpWhisperEnew<cr>',      desc = 'Whisper Enew' },
+          { '<C-g>wn',    '<cmd>GpWhisperNew<cr>',       desc = 'Whisper New' },
+          { '<C-g>wp',    '<cmd>GpWhisperPopup<cr>',     desc = 'Whisper Popup' },
+          { '<C-g>wr',    '<cmd>GpWhisperRewrite<cr>',   desc = 'Whisper Inline Rewrite' },
+          { '<C-g>wt',    '<cmd>GpWhisperTabnew<cr>',    desc = 'Whisper Tabnew' },
+          { '<C-g>wv',    '<cmd>GpWhisperVnew<cr>',      desc = 'Whisper Vnew' },
+          { '<C-g>ww',    '<cmd>GpWhisper<cr>',          desc = 'Whisper' },
+          { '<C-g>x',     '<cmd>GpContext<cr>',          desc = 'Toggle GpContext' },
         },
       }
     end,
-  },
-  {
-    "olimorris/codecompanion.nvim",
-    opts = {
-      log_level = "DEBUG",
-    },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      -- "j-hui/fidget.nvim"
-    },
-    -- init = function()
-    --   require("custom.plugins.fidget-spinner"):init()
-    -- end,
-    config = function()
-      require("codecompanion").setup({
-        extensions = {
-          mcphub = {
-            callback = "mcphub.extensions.codecompanion",
-            opts = {
-              make_vars = true,
-              make_slash_commands = true,
-              show_result_in_chat = true,
-            },
-          },
-        },
-        adapters = {
-          anthropic = function()
-            return require("codecompanion.adapters").extend("anthropic", {
-              env = {
-                api_key = "CC_ANTHROPIC_API_KEY"
-              },
-            })
-          end,
-        },
-        strategies = {
-          chat = {
-            adapter = "anthropic",
-          },
-          inline = {
-            adapter = "anthropic",
-          },
-        }
-      })
-    end
-  },
-  {
-    "ravitemer/mcphub.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",  -- Required for Job and HTTP requests
-    },
-    -- uncomment the following line to load hub lazily
-    --cmd = "MCPHub",  -- lazy load 
-    build = "npm install -g mcp-hub@latest",  -- Installs required mcp-hub npm module
-    -- uncomment this if you don't want mcp-hub to be available globally or can't use -g
-    -- build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
-    config = function()
-      require("mcphub").setup({
-        extensions = {
-          codecompanion = {
-            -- Show the mcp tool result in the chat buffer
-            show_result_in_chat = true,
-            -- Make chat #variables from MCP server resources
-            make_vars = true,
-            -- Create slash commands for prompts
-            make_slash_commands = true,
-          }
-        }
-      })
-    end,
-  },
-  -- { 'augmentcode/augment.vim' },
-  -- {
-  --   'yetone/avante.nvim',
-  --   event = 'VeryLazy',
-  --   lazy = false,
-  --   version = '*', -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
-  --   opts = {
-  --     -- add any opts here
-  --     -- for example
-  --     -- provider = "openai",
-  --     -- openai = {
-  --     --   endpoint = "https://api.openai.com/v1",
-  --     --   model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
-  --     --   timeout = 30000, -- timeout in milliseconds
-  --     --   temperature = 0, -- adjust if needed
-  --     --   max_tokens = 4096,
-  --     -- },
-  --   },
-  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  --   build = 'make',
-  --   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-  --   dependencies = {
-  --     'stevearc/dressing.nvim',
-  --     'nvim-lua/plenary.nvim',
-  --     'MunifTanjim/nui.nvim',
-  --     --- The below dependencies are optional,
-  --     -- 'echasnovski/mini.pick', -- for file_selector provider mini.pick
-  --     'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
-  --     'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
-  --     -- 'ibhagwan/fzf-lua', -- for file_selector provider fzf
-  --     'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
-  --     -- 'zbirenbaum/copilot.lua', -- for providers='copilot'
-  --     -- {
-  --     --   -- support for image pasting
-  --     --   'HakonHarnes/img-clip.nvim',
-  --     --   event = 'VeryLazy',
-  --     --   opts = {
-  --     --     -- recommended settings
-  --     --     default = {
-  --     --       embed_image_as_base64 = false,
-  --     --       prompt_for_file_name = false,
-  --     --       drag_and_drop = {
-  --     --         insert_mode = true,
-  --     --       },
-  --     --       -- required for Windows users
-  --     --       use_absolute_path = true,
-  --     --     },
-  --     --   },
-  --     -- },
-  --     -- {
-  --     --   -- Make sure to set this up properly if you have lazy=true
-  --     --   'MeanderingProgrammer/render-markdown.nvim',
-  --     --   opts = {
-  --     --     file_types = { 'markdown', 'Avante' },
-  --     --   },
-  --     --   ft = { 'markdown', 'Avante' },
-  --     -- },
-  --   },
-  -- },
+  }
 }
