@@ -84,4 +84,9 @@ vim.g.claude_api_key = os.getenv 'ANTHROPIC_API_KEY'
 -- Prepend mise shims to PATH
 vim.env.PATH = vim.env.HOME .. '/.local/share/mise/shims:' .. vim.env.PATH
 
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = false,
+})
+
 -- vim: ts=2 sts=2 sw=2 et
