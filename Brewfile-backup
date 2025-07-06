@@ -7,6 +7,7 @@ tap "koekeishiya/formulae"
 tap "stripe/stripe-cli"
 tap "wez/wezterm"
 tap "josephpage/jetpack-io"
+tap "arl/arl"
 
 brew "ansible", link: false
 brew "bash"
@@ -47,7 +48,9 @@ brew "devbox"
 brew "git-delta"
 brew "starship"
 brew "uv"
-breq "libpq"
+brew "libpq"
+brew "gitmux"
+brew "kubectx"
 
 cask "font-fantasque-sans-mono"
 cask "font-hack-nerd-font"
