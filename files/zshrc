@@ -47,10 +47,6 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 
-# Case insensitive completion
-# autoload -U compinit && compinit
-# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-
 # Load any custom after code
 if [ -d $HOME/.zsh.after/ ]; then
  if [ "$(ls -A $HOME/.zsh.after/)" ]; then
@@ -67,7 +63,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#33859d,bold"
 printf "\e[?1042l"
 
 # PROMPT='%f%F{43}la%f%F{44}pt%f%F{38}op%f%F{44}:%1~/%f %F{44}%#%f '
-
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -97,28 +92,16 @@ set -o vi
 export EDITOR=nvim
 export VISUAL=nvim
 
-# export NVM_DIR=~/.nvm
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export NVM_DIR="$HOME/.nvm"
-# [ -s "$(brew --prefix nvm)/nvm.sh" ] && . "$(brew --prefix nvm)/nvm.sh"  # This loads nvm
-# [ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && . "$(brew --prefix nvm)/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-# eval "$(/Users/accessd/.local/bin/mise activate zsh --shims)"
-
-#eval "$(mise activate zsh)" # this sets up interactive sessions
-
 eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
-# source /usr/local/opt/spaceship/spaceship.zsh
 eval "$(mise activate zsh)"
-
-# opencode
-export PATH=/Users/accessd/.opencode/bin:$PATH
-
-# bun completions
-# [ -s "/Users/accessd/.bun/_bun" ] && source "/Users/accessd/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/accessd/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/accessd/bin/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/accessd/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/accessd/bin/google-cloud-sdk/completion.zsh.inc'; fi
