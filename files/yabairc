@@ -74,7 +74,7 @@ yabai -m rule --add app="^Alacritty$" space=code
 yabai -m rule --add app="^Wezterm$" space=code
 yabai -m rule --add app="^Mail$" space=mail
 yabai -m rule --add app="^Safari$" space=web
-yabai -m rule --add app=".*Chrome.*" space=web
+yabai -m rule --add app=".*Chrome.*" space=code
 yabai -m rule --add app="^Arc$" manage=on
 yabai -m rule --add app="^Arc$" space=web
 yabai -m rule --add app=".*Firefox.*" space=web
