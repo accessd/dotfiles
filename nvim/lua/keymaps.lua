@@ -87,9 +87,15 @@ vim.keymap.set('n', '<leader>l', ':TestLast<CR>', {})
 --  endif
 --endfunction
 
-vim.keymap.set('n', '<leader>vc', ':VimuxInterruptRunner<CR>', {})
-vim.keymap.set('n', '<leader>wi', ':VimuxInspectRunner<CR>', {})
-vim.keymap.set('n', '<leader>w', ':VimuxZoomRunner<CR>', {})
+vim.keymap.set('n', '<leader>vc', ':VimuxInterruptRunner<CR>', { desc = 'Vimux interrupt runner' })
+vim.keymap.set('n', '<leader>wi', ':VimuxInspectRunner<CR>', { desc = 'Vimux inspect runner' })
+vim.keymap.set('n', '<leader>w', ':VimuxZoomRunner<CR>', { desc = 'Vimux zoom runner' })
+
+vim.keymap.set("n", "<leader>fp", function()
+  local path = vim.fn.expand("%:p")
+  vim.fn.setreg("+", path)
+  print("file:", path)
+end)
 
 vim.keymap.set('i', '<C-h>', '<BS>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('i', '<C-h>', '<BS>', { noremap = true, silent = true })
@@ -115,7 +121,8 @@ vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
 
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
-vim.keymap.set('n', '<leader>ur', '<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>', { desc = 'Redraw / Clear hlsearch / Diff Update' })
+vim.keymap.set('n', '<leader>ur', '<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>',
+  { desc = 'Redraw / Clear hlsearch / Diff Update' })
 
 vim.keymap.set('n', '<leader>dl', function()
   if vim.diagnostic.is_enabled() then

@@ -89,4 +89,6 @@ vim.diagnostic.config({
   virtual_lines = false,
 })
 
+vim.opt.autoread = true
+
 -- vim: ts=2 sts=2 sw=2 et
