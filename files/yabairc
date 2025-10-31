@@ -44,7 +44,7 @@ yabai -m space --create
 yabai -m space 2 --label web
 
 yabai -m space --create
-yabai -m space 3 --label mail
+yabai -m space 3 --label slack
 
 yabai -m space --create
 yabai -m space 4 --label notes
@@ -59,10 +59,13 @@ yabai -m space --create
 yabai -m space 7 --label teams
 
 yabai -m space --create
-yabai -m space 8 --label slack
+yabai -m space 8 --label zoom
 
 yabai -m space --create
 yabai -m space 9 --label misc
+
+yabai -m space --create
+yabai -m space 10 --label mail
 
 
 # specific space settings
@@ -86,7 +89,7 @@ yabai -m rule --add app="^Spotify$" space=spotify
 yabai -m rule --add app="^Slack$" space=slack #grid=1:1:0:0:1:1 #manage=off
 yabai -m rule --add app="^Telegram$" space=telegram #grid=1:1:0:0:1:1 #manage=off
 yabai -m rule --add app=".*Teams.*" space=misc #grid=1:1:0:0:1:1 #manage=off
-yabai -m rule --add app=".*zoom.*" space=misc #grid=1:1:0:0:1:1 #manage=off
+yabai -m rule --add app=".*zoom.*" space=zoom #grid=1:1:0:0:1:1 #manage=off
 yabai -m rule --add app="^.*Tunnel.*$" space=misc
 yabai -m rule --add app="^.*VPN.*$" space=misc
 
