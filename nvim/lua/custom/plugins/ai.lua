@@ -15,6 +15,42 @@ return {
   },
 
   {
+    "olimorris/codecompanion.nvim",
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("codecompanion").setup({
+        strategies = {
+          chat = {
+            adapter = "claude_code",
+          },
+          inline = {
+            adapter = "copilot",
+          },
+          cmd = {
+            adapter = "copilot",
+          }
+        },
+        adapters = {
+          acp = {
+            claude_code = function()
+              return require("codecompanion.adapters").extend("claude_code", {
+                env = {
+                  api_key = "CLAUDE_CODE_OAUTH_TOKEN",
+                  -- CLAUDE_CODE_OAUTH_TOKEN = "my-oauth-token",
+                },
+              })
+            end,
+          },
+        },
+      })
+    end
+  },
+
+  {
     'robitx/gp.nvim',
     name = 'gp',
     event = 'BufEnter',
@@ -94,11 +130,11 @@ return {
           --     .. 'and expect precise, technical responses tailored to your development needs.\n',
           -- },
           {
-            name = 'ChatGPT4',
+            name = 'ChatGPT5',
             chat = true,
             command = false,
             -- string with model name or table with model name and parameters
-            model = { model = 'gpt-4o', temperature = 1.1, top_p = 1 },
+            model = { model = 'gpt-5.1-2025-11-13', temperature = 1.1, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = 'You are a general AI assistant.\n\n'
                 .. 'The user provided the additional info about how they would like you to respond:\n\n'
@@ -111,22 +147,11 @@ return {
                 .. "- Take a deep breath; You've got this!\n",
           },
           {
-            name = 'CodeGPT4',
-            chat = false,
-            command = true,
-            -- string with model name or table with model name and parameters
-            model = { model = 'gpt-4o', temperature = 0.8, top_p = 1 },
-            -- system prompt (use this to specify the persona/role of the AI)
-            system_prompt = 'You are an AI working as a code editor.\n\n'
-                .. 'Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n'
-                .. 'START AND END YOUR ANSWER WITH:\n\n```',
-          },
-          {
-            name = 'Claude4Sonnet',
+            name = 'Claude4-5Sonnet',
             chat = true,
             command = true,
             provider = 'anthropic',
-            model = { model = 'claude-sonnet-4-20250514' },
+            model = { model = 'claude-sonnet-4-5' },
             system_prompt = 'You are a general AI assistant.\n\n'
                 .. 'The user provided the additional info about how they would like you to respond:\n\n'
                 .. "- If you're unsure don't guess and say you don't know instead.\n"

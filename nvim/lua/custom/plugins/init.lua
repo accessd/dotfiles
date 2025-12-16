@@ -53,7 +53,12 @@ return {
   -- },
 
   { 'terryma/vim-expand-region' },
-  { 'vim-test/vim-test' },
+  {
+    'vim-test/vim-test',
+    config = function()
+      vim.g['test#go#gotest#options'] = '-v'
+    end,
+  },
   { 'preservim/vimux' },
   { 'famiu/bufdelete.nvim' },
   { 'mg979/vim-visual-multi' },
@@ -236,6 +241,7 @@ return {
         },
       },
       new_notes_location = 'inbox',
+      disable_frontmatter = true,
     },
   },
 
@@ -386,6 +392,12 @@ return {
       placement = 'inline', -- 'top'
       inline_padding_left = 3,
     },
+  },
+  {
+    'fatih/vim-go'
+  },
+  {
+    'tpope/vim-fugitive'
   }
   -- {
   --   'aidancz/buvvers.nvim',

@@ -48,6 +48,18 @@ return {
       vim.cmd.colorscheme("codescope")
     end,
   },
+  -- {
+  --   "compline",
+  --   dir = "~/.local/share/nvim/lazy/compline/compline",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- require("compline").setup({
+  --     --   transparent = true
+  --     -- })
+  --     -- vim.cmd.colorscheme("compline")
+  --   end,
+  -- },
 
   -- {
   --   'kyazdani42/blue-moon',

@@ -199,7 +199,17 @@ return {
         --   },
         -- },
         intelephense = {},
-        gopls = {},
+        gopls = {
+          settings = {
+            gofumpt = true,
+            staticcheck = true,
+            usePlaceholders = true,
+            completeUnimported = true,
+            analyses = {
+              unusedparams = true,
+            },
+          }
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
