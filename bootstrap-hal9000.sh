@@ -9,7 +9,9 @@ if ! xcode-select -p >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! command -v brew >/dev/null 2>&1; then
+if ! command -v brew >/dev/null 2>&1 \
+  && [[ ! -x /opt/homebrew/bin/brew ]] \
+  && [[ ! -x /usr/local/bin/brew ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
