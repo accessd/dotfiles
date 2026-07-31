@@ -8,6 +8,7 @@ config.font = wezterm.font("FiraCode Nerd Font", { weight = "Medium" })
 -- config.font = wezterm.font("MesloLGM Nerd Font", { weight = "Medium" })
 config.line_height = 1.1
 config.font_size = 20
+config.custom_block_glyphs = false
 -- config.color_scheme = "Gotham (terminal.sexy)"
 config.color_scheme = "Default (dark) (terminal.sexy)"
 -- config.color_scheme = "nord"
@@ -33,6 +34,7 @@ config.window_background_opacity = 0.9
 
 -- config.disable_default_key_bindings = true
 
+-- config.leader = { key="f", mods="CTRL" }
 config.keys = {
 	-- { key = 'h', mods = 'CTRL', action = act.SendKey {key = 'w', mods = 'CTRL'} }
 	{ key = "LeftArrow", mods = "CTRL|SHIFT", action = wezterm.action.Nop },

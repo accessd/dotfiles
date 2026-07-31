@@ -131,3 +131,7 @@ function add_tag () { git tag -a $1 -m "Release $1" }
 alias gcr="ga;gc -m 'fix';grh 2"
 alias gpr="git smart-pull"
 alias fixpush="ga && gcm 'fix' && gp"
+
+# Restart macOS windowing services when Spaces / fullscreen / wake state gets stuck
+alias fix-sketchybar='killall Dock; launchctl kickstart -k "gui/${UID}/homebrew.mxcl.sketchybar"'
+alias fix-yabai='killall Dock; launchctl kickstart -k "gui/${UID}/com.asmvik.yabai"; launchctl kickstart -k "gui/${UID}/homebrew.mxcl.sketchybar"'

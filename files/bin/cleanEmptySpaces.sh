@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-yabai -m query --spaces --display | \
-     jq -re 'map(select(."native-fullscreen" == 0)) | length > 1' \
-     && yabai -m query --spaces | \
-          # jq -re 'map(select(."windows" == [] and ."focused" == 0 and ."label" == "").index) | reverse | .[] ' | \
-          jq -re 'map(select(."focused" == 0).index) | reverse | .[] ' | \
-          xargs -I % sh -c 'yabai -m space % --destroy'
+set -euo pipefail
+
+# Remove only leaked, empty, unlabeled Spaces after the 10 managed ones.
+# Do not destroy non-empty or labeled spaces.
+spaces_to_destroy=$(yabai -m query --spaces \
+  | jq -r 'map(select((.index > 10) and (.label == "") and ((.windows | length) == 0)).index) | reverse | .[]')
+
+[ -n "$spaces_to_destroy" ] || exit 0
+
+printf '%s\n' "$spaces_to_destroy" | while IFS= read -r space_index; do
+  yabai -m space "$space_index" --destroy
+done

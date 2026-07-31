@@ -56,7 +56,7 @@ return {
     event = 'BufEnter',
     config = function()
       require('gp').setup {
-        openai_api_key = os.getenv 'OPENAI_API_KEY',
+        openai_api_key = os.getenv 'NVIM_OPENAI_API_KEY',
         providers = {
           anthropic = {
             endpoint = 'https://api.anthropic.com/v1/messages',
@@ -75,7 +75,7 @@ return {
           },
           openai = {
             endpoint = 'https://api.openai.com/v1/chat/completions',
-            secret = vim.fn.getenv 'OPENAI_API_KEY',
+            secret = os.getenv 'NVIM_OPENAI_API_KEY',
           },
         },
         whisper = {
@@ -134,7 +134,7 @@ return {
             chat = true,
             command = false,
             -- string with model name or table with model name and parameters
-            model = { model = 'gpt-5.1-2025-11-13', temperature = 1.1, top_p = 1 },
+            model = { model = 'gpt-5.5-2026-04-23' },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = 'You are a general AI assistant.\n\n'
                 .. 'The user provided the additional info about how they would like you to respond:\n\n'

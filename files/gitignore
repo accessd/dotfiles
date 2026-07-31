@@ -84,15 +84,15 @@ repomix-output*
 
 # docs/architecture/*
 
-docs/tasks/CORE-*
+#docs/tasks/CORE-*
+#docs/tasks
+docs/readme.ai.md
 .roo/
 .roomodes
 .taskmasterconfig
 .windsurfrules
-scripts/
 
 
-# Added by Claude Task Master
 # Logs
 logs
 *.log
@@ -112,7 +112,17 @@ node_modules/
 *.njsproj
 *.sln
 *.sw?
-# OS specific
-# Task files
-tasks.json
-tasks/
+
+#CLAUDE.md
+#.claude
+
+# backlog
+GEMINI.md
+#AGENTS.md
+git_changes.sh
+
+mise.toml
+
+CLAUDE.local.md
+
+current-context.md

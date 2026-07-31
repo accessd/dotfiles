@@ -1,5 +1,5 @@
 # Quickly restart the yabai launch agent
-ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai" && killall Übersicht && /Applications/Übersicht.app/Contents/MacOS/Übersicht &
+#ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai" && killall Übersicht && /Applications/Übersicht.app/Contents/MacOS/Übersicht &
 
 # open terminal
 # f12 : /Applications/iTerm.app/Contents/MacOS/iTerm2

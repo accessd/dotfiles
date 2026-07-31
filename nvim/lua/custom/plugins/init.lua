@@ -398,6 +398,57 @@ return {
   },
   {
     'tpope/vim-fugitive'
+  },
+  {
+    "sotte/presenting.nvim",
+    opts = {
+      -- fill in your options here
+      -- see :help Presenting.config
+    },
+    cmd = { "Presenting" },
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft = 'markdown',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'echasnovski/mini.nvim',
+    },
+    opts = {},
+    keys = {
+      {
+        '<leader>mr',
+        '<cmd>RenderMarkdown buf_toggle<cr>',
+        desc = 'Toggle Markdown preview',
+      },
+    },
+  },
+  {
+    'selimacerbas/markdown-preview.nvim',
+    dependencies = { 'selimacerbas/live-server.nvim' },
+    cmd = {
+      'MarkdownPreview',
+      'MarkdownPreviewRefresh',
+      'MarkdownPreviewStop',
+    },
+    ft = { 'markdown', 'mermaid' },
+    config = function()
+      require('markdown_preview').setup {
+        default_theme = 'dark',
+      }
+    end,
+    keys = {
+      {
+        '<leader>mp',
+        '<cmd>MarkdownPreview<cr>',
+        desc = 'Open Markdown preview',
+      },
+      {
+        '<leader>mP',
+        '<cmd>MarkdownPreviewStop<cr>',
+        desc = 'Stop Markdown preview',
+      },
+    },
   }
   -- {
   --   'aidancz/buvvers.nvim',
