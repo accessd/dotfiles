@@ -1,0 +1,9 @@
+[tools]
+go = "1.26.3"
+node = "22"
+"pipx:ufbt" = "latest"
+python = "3.13"
+ruby = "4.0.6"
+
+[settings]
+idiomatic_version_file_enable_tools = ["ruby"]

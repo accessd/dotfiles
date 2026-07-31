@@ -1,5 +1,7 @@
 ---
 - hosts: all
+  vars:
+    configure_window_manager: true
   tasks:
     # tmux plugin manager (tpm)
     - name: Create ~/.tmux/plugins directory
@@ -38,6 +40,21 @@
     - name: Create ~/.config directory
       file: path=~/.config state=directory
 
+    - name: Create agent work directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - ~/projects
+        - ~/logs/agents
+        - ~/worktrees
+
+    - name: Create mise config directory
+      file: path=~/.config/mise state=directory
+
+    - name: Create mise config symlink
+      file: src={{ curdir }}/files/mise/config.toml dest=~/.config/mise/config.toml state=link force=true
+
     - name: Create neovim config symlink
       file: src={{ curdir }}/nvim dest=~/.config/nvim state=link force=true
 
@@ -51,14 +68,21 @@
         dest: ~/.tmux/tmux-agent-layout
         state: link
         force: true
-    - file: src={{ curdir }}/files/skhdrc dest=~/.skhdrc state=link force=true
-    - file: src={{ curdir }}/files/yabairc dest=~/.yabairc state=link force=true
+    - name: Create skhd config symlink
+      file: src={{ curdir }}/files/skhdrc dest=~/.skhdrc state=link force=true
+      when: configure_window_manager | bool
+
+    - name: Create yabai config symlink
+      file: src={{ curdir }}/files/yabairc dest=~/.yabairc state=link force=true
+      when: configure_window_manager | bool
+
     - file: src={{ curdir }}/files/gitconfig dest=~/.gitconfig state=link force=true
     - file: src={{ curdir }}/files/gitignore dest=~/.gitignore state=link force=true
     - file: src={{ curdir }}/files/wezterm.lua dest=~/.wezterm.lua state=link force=true
 
     - name: Create sketchybar config symlink
       file: src={{ curdir }}/files/sketchybar dest=~/.config/sketchybar state=link force=true
+      when: configure_window_manager | bool
 
     # karabiner configuration
     - name: Create ~/.config/karabiner directory

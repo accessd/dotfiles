@@ -18,5 +18,7 @@ setup: install_ansible install_neovim install_dotfiles
 
 full_setup: install_ansible restore_homebrew install_dotfiles
 
-.PHONY: install_ansible install_neovim restore_homebrew configure_vim install_dotfiles setup full_setup
+setup_hal9000:
+	./bootstrap-hal9000.sh
 
+.PHONY: install_ansible install_neovim restore_homebrew configure_vim install_dotfiles setup full_setup setup_hal9000

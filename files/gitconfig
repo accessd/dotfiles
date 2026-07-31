@@ -1,6 +1,8 @@
 [user]
 name = Andrey Morskov
 email = accessd0@gmail.com
+[includeIf "gitdir:~/projects/wallarm/"]
+  path = .gitconfig-wallarm
 # set your user tokens as environment variables, such as ~/.secrets
 # See the README for examples.
 [color]
@@ -181,3 +183,7 @@ email = accessd0@gmail.com
 [pack]
 	windowMemory = 100m
 	packSizeLimit = 100m
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main

@@ -1,0 +1,5 @@
+[hal9000]
+localhost ansible_connection=local
+
+[hal9000:vars]
+configure_window_manager=false
