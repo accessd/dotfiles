@@ -21,6 +21,9 @@ fi
 
 brew tap arl/arl
 brew trust --formula arl/arl/gitmux
+brew tap hashicorp/tap
+brew trust --formula hashicorp/tap/terraform
+brew trust --formula hashicorp/tap/vault
 brew tap jesseduffield/lazydocker
 brew trust --formula jesseduffield/lazydocker/lazydocker
 brew bundle --file="$repo_dir/Brewfile.hal9000"
