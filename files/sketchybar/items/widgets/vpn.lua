@@ -1,100 +1,62 @@
 local colors = require("colors")
 local settings = require("settings")
 
-local vpn = sbar.add("item", "widgets.vpn", {
-	position = "right",
-	icon = {
-		font = {
-			style = settings.font.style_map["Regular"],
-			size = 16.0,
-		},
-		string = "󰖂",
-		color = colors.red,
-	},
-	label = {
-		font = { family = settings.font.primary },
-		string = "VPN",
-		color = colors.red,
-	},
-	update_freq = 5,
-})
-
-local function get_vpn_connection(routes)
-	if routes:find("VPN_ROUTE_REMOVED") then
-		return "A"
-	elseif routes:find("VPN_ROUTE_REMOVED") then
-		return "DO"
-	elseif routes:find("VPN_ROUTE_REMOVED") then
-		return "W"
-	end
-	return nil
+local ok, vpn_configs = pcall(require, "items.widgets.vpn_configs_local")
+if not ok or type(vpn_configs) ~= "table" or #vpn_configs == 0 then
+	return
 end
 
-vpn:subscribe({ "routine" }, function()
-	sbar.exec([[netstat -nr | grep -E 'utun|tun' | grep -v '^default' | grep -v '::']], function(routes)
-		if routes and routes:len() > 0 then
-			local connection = get_vpn_connection(routes)
+local vpn_items = {}
 
-			if connection then
+for _, config in ipairs(vpn_configs) do
+	local vpn = sbar.add("item", "widgets.vpn." .. config.name, {
+		position = "right",
+		icon = {
+			font = {
+				style = settings.font.style_map["Regular"],
+				size = 16.0,
+			},
+			string = "",
+			color = colors.red,
+		},
+		label = {
+			font = { family = settings.font.primary },
+			string = config.name,
+			color = colors.red,
+		},
+		update_freq = 30,
+	})
+
+	vpn:subscribe({ "routine" }, function()
+		sbar.exec([[netstat -nr | grep -E 'utun|tun' | grep -v '^default' | grep -v '::']], function(routes)
+			if routes and routes:len() > 0 and routes:find(config.route_fragment) then
 				vpn:set({
-					icon = {
-						color = colors.green,
-					},
-					label = {
-						string = connection,
-						color = colors.green,
-					},
+					icon = { color = colors.green },
+					label = { color = colors.green },
 				})
 			else
 				vpn:set({
-					icon = {
-						color = colors.yellow,
-					},
-					label = {
-						string = "Unknown",
-						color = colors.yellow,
-					},
+					icon = { color = colors.red },
+					label = { color = colors.red },
 				})
 			end
-		else
-			vpn:set({
-				icon = {
-					color = colors.red,
-				},
-				label = {
-					string = "Disconnected",
-					color = colors.red,
-				},
-			})
-		end
+		end)
 	end)
-end)
 
-vpn:subscribe("mouse.clicked", function(env)
-	sbar.exec(
-		[[
-        echo "=== VPN Routes ===";
-        netstat -nr | grep -E 'utun|tun' | grep -v '^default' | grep -v '::';
-        echo "\n=== Network Interfaces ===";
-        ifconfig | grep -E 'utun[0-9]+: ' -A1
-    ]],
-		function(details)
-			if details and details:len() > 0 then
-				os.execute(
-					"osascript -e 'display notification \""
-						.. details:gsub('"', '\\"'):gsub("\n", " - ")
-						.. '" with title "OpenVPN Status"\''
-				)
-			else
-				os.execute(
-					'osascript -e \'display notification "No active VPN connection" with title "OpenVPN Status"\''
-				)
+	vpn:subscribe("mouse.clicked", function(env)
+		sbar.exec(
+			[[netstat -nr | grep -E 'utun|tun' | grep -v '^default' | grep -v '::']],
+			function(routes)
+				local msg = (routes and routes:len() > 0) and "Active" or "No connection"
+				sbar.exec("osascript -e 'display notification \"" .. msg .. "\" with title \"VPN: " .. config.name .. "\"'")
 			end
-		end
-	)
-end)
+		)
+	end)
 
-sbar.add("bracket", "widgets.vpn.bracket", { vpn.name }, {
+	table.insert(vpn_items, vpn.name)
+end
+
+sbar.add("bracket", "widgets.vpn.bracket", vpn_items, {
 	background = { color = colors.bg1 },
 })
 
