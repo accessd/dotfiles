@@ -13,6 +13,8 @@
 
     - name: Install tmux plugins
       shell: ~/.tmux/plugins/tpm/bin/install_plugins
+      register: tpm_install
+      changed_when: "'download success' in tpm_install.stdout"
       ignore_errors: yes
 
     # zsh configuration
@@ -30,9 +32,6 @@
 
     - name: Copy bin files to ~/bin
       copy: src={{ curdir }}/files/bin/ dest=~/bin/ mode=preserve
-
-    - name: Make bin files executable
-      shell: chmod +x ~/bin/*
 
     # neovim configuration
     - name: Create ~/.config directory
