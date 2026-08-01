@@ -9,7 +9,7 @@ https://{$PI_SUPER_HOST}:8724 {
 	reverse_proxy 127.0.0.1:8723
 }
 
-http://{$PI_SUPER_HOST}:8725 {
+http://{$PI_SUPER_HOST}:8726 {
 	bind 127.0.0.1
 	handle /hal9000-root-ca.crt {
 		root * {$PI_SUPER_STATE_DIR}
