@@ -3,7 +3,7 @@
 	skip_install_trust
 }
 
-{$PI_SUPER_HTTPS_SITES:https://hal9000.local:8724} {
+{$PI_SUPER_HTTPS_SITES:https://hal9000.local:8724, https://hal9000.14a2.accessd.netcraze.club:8724} {
 	bind 127.0.0.1
 	tls internal
 	reverse_proxy 127.0.0.1:8723
