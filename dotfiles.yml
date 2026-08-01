@@ -52,6 +52,12 @@
     - name: Create mise config symlink
       file: src={{ curdir }}/files/mise/config.toml dest=~/.config/mise/config.toml state=link force=true
 
+    - name: Create Caddy config directory
+      file: path=~/.config/caddy state=directory
+
+    - name: Create pi-super Caddy config symlink
+      file: src={{ curdir }}/files/caddy/pi-super.Caddyfile dest=~/.config/caddy/pi-super.Caddyfile state=link force=true
+
     - name: Create neovim config symlink
       file: src={{ curdir }}/nvim dest=~/.config/nvim state=link force=true
 
