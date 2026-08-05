@@ -82,7 +82,11 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # https://github.com/agkozak/zsh-z
-[ -f "$HOME/bin/zsh-z.plugin.zsh" ] && source "$HOME/bin/zsh-z.plugin.zsh"
+if [[ -f "$HOME/bin/zsh-z.plugin.zsh" ]]; then
+ source "$HOME/bin/zsh-z.plugin.zsh"
+elif command -v zoxide >/dev/null 2>&1; then
+ eval "$(zoxide init zsh)"
+fi
 
 autoload -U compinit; compinit
 zstyle ':completion:*' menu select
