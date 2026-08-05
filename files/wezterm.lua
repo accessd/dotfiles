@@ -1,6 +1,7 @@
 local wezterm = require("wezterm")
 
 local smart_splits = wezterm.plugin.require("https://github.com/mrjones2014/smart-splits.nvim")
+local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
 
 local config = wezterm.config_builder()
 
@@ -25,7 +26,7 @@ config.max_fps = 120
 config.prefer_egl = true
 
 config.audible_bell = "Disabled"
-config.enable_tab_bar = false
+config.enable_tab_bar = true
 
 config.window_decorations = "RESIZE"
 
@@ -91,5 +92,7 @@ config.keys = {
 -- 	-- log level to use: info, warn, error
 -- 	log_level = "info",
 -- })
+
+bar.apply_to_config(config)
 
 return config
