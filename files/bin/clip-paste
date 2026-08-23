@@ -1,0 +1,15 @@
+#!/bin/sh
+# Portable "print the system clipboard to stdout".
+# macOS: pbpaste. Wayland: wl-paste. X11: xclip/xsel.
+if command -v pbpaste >/dev/null 2>&1; then
+  exec pbpaste
+elif command -v wl-paste >/dev/null 2>&1 && [ -n "${WAYLAND_DISPLAY:-}" ]; then
+  exec wl-paste --no-newline
+elif command -v xclip >/dev/null 2>&1; then
+  exec xclip -selection clipboard -o
+elif command -v xsel >/dev/null 2>&1; then
+  exec xsel --clipboard --output
+else
+  echo "clip-paste: no clipboard backend (pbpaste/wl-paste/xclip/xsel)" >&2
+  exit 1
+fi

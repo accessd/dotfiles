@@ -1,0 +1,8 @@
+#!/bin/sh
+# tmux status helper: render gitmux for the given path, staying silent when
+# gitmux isn't installed (otherwise the status line fills with shell errors).
+command -v gitmux >/dev/null 2>&1 || exit 0
+if [ -f "$HOME/.gitmux.conf" ]; then
+  exec gitmux -cfg "$HOME/.gitmux.conf" "$1"
+fi
+exec gitmux "$1"

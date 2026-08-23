@@ -9,7 +9,7 @@
 # contains the message verbatim.
 #
 # Usage (from tmux.conf):
-#   bind-key a run-shell -b '~/dotfiles/files/bin/ai-scroll-to-last-response.sh #{pane_id}'
+#   bind-key a run-shell -b '#{@dotfiles}/files/bin/ai-scroll-to-last-response.sh #{pane_id}'
 set -u
 
 pane_id="${1:?pane_id required}"

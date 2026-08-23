@@ -13,7 +13,7 @@
 # assistant message to the system clipboard. Send it and let Codex do the work.
 #
 # Usage (from tmux.conf):
-#   bind-key g run-shell -b '~/dotfiles/files/bin/ai-response-to-editor.sh #{pane_id}'
+#   bind-key g run-shell -b '#{@dotfiles}/files/bin/ai-response-to-editor.sh #{pane_id}'
 set -u
 
 pane_id="${1:?pane_id required}"
@@ -129,7 +129,7 @@ PY
       warn "no claude assistant text found"
       exit 1
     fi
-    printf '%s' "$text" | pbcopy
+    printf '%s' "$text" | "$(dirname "$0")/clip-copy"
     ;;
 esac
 

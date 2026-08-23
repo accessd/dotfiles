@@ -1,0 +1,14 @@
+#!/bin/sh
+# Print the path of the most recent screenshot.
+# Screenshot destinations differ per OS/tool, so probe the usual ones.
+for dir in \
+  "$HOME/Pictures/screenshots" \
+  "$HOME/Pictures/Screenshots" \
+  "$HOME/Pictures" \
+  "$HOME/Desktop"
+do
+  [ -d "$dir" ] || continue
+  latest=$(ls -t "$dir"/*.png 2>/dev/null | head -1)
+  [ -n "$latest" ] && { printf '%s\n' "$latest"; exit 0; }
+done
+exit 1
