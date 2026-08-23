@@ -70,8 +70,10 @@ fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Where there's no ~/.fzf.zsh (Linux packages, recent Homebrew), fzf can print
-# its own shell integration.
-if [[ ! -f ~/.fzf.zsh ]] && command -v fzf >/dev/null 2>&1; then
+# its own shell integration. The flag landed in fzf 0.48 and Debian bookworm
+# still ships 0.38, so probe before using it; ~/.zsh.after/fzf.zsh handles the
+# older layout.
+if [[ ! -f ~/.fzf.zsh ]] && command -v fzf >/dev/null 2>&1 && fzf --zsh >/dev/null 2>&1; then
  eval "$(fzf --zsh)"
 fi
 

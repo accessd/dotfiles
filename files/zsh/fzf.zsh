@@ -12,9 +12,12 @@ elif command -v fzf >/dev/null 2>&1; then
   if fzf --zsh >/dev/null 2>&1; then
     source <(fzf --zsh)
   else
-    [[ $- == *i* ]] && [[ -r /usr/share/doc/fzf/examples/completion.zsh ]] \
-      && source /usr/share/doc/fzf/examples/completion.zsh
-    [[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]] \
-      && source /usr/share/doc/fzf/examples/key-bindings.zsh
+    # Both scripts need zle, which only exists in an interactive shell.
+    if [[ -o interactive ]]; then
+      [[ -r /usr/share/doc/fzf/examples/completion.zsh ]] \
+        && source /usr/share/doc/fzf/examples/completion.zsh
+      [[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]] \
+        && source /usr/share/doc/fzf/examples/key-bindings.zsh
+    fi
   fi
 fi
