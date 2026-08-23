@@ -36,24 +36,32 @@ yabai -m config window_gap                   15
 # mission-control desktop labels
 # Keep this idempotent: this file can be reloaded after Dock/display changes.
 # Creating spaces unconditionally leaks one extra Space per reload.
-set -- code web slack notes spotify telegram teams zoom misc mail
+set -- code web slack mail spotify telegram misc chrome teams notes
 required_space_count=$#
 current_space_count=$(yabai -m query --spaces | jq 'length')
 
+# `space --create` reports success even when the scripting addition silently
+# refuses to add the space, so count again instead of trusting the exit status.
 while [ "$current_space_count" -lt "$required_space_count" ]; do
   yabai -m space --create
-  current_space_count=$((current_space_count + 1))
+  new_space_count=$(yabai -m query --spaces | jq 'length')
+  if [ "$new_space_count" -le "$current_space_count" ]; then
+    echo "yabai: cannot create space $((current_space_count + 1)); check the scripting addition" >&2
+    break
+  fi
+  current_space_count=$new_space_count
 done
 
 space_index=1
 for space_label do
+  [ "$space_index" -le "$current_space_count" ] || break
   yabai -m space "$space_index" --label "$space_label"
   space_index=$((space_index + 1))
 done
 
 
 # specific space settings
-yabai -m config --space mail  layout        stack
+# yabai -m config --space mail  layout        stack
 
 # window rules
 yabai -m rule --add app="^iTerm2$" space=code
@@ -61,7 +69,7 @@ yabai -m rule --add app="^Alacritty$" space=code
 yabai -m rule --add app="^Wezterm$" space=code
 yabai -m rule --add app="^Mail$" space=mail
 yabai -m rule --add app="^Safari$" space=web
-yabai -m rule --add app=".*Chrome.*" space=zoom
+yabai -m rule --add app=".*Chrome.*" space=chrome
 yabai -m rule --add app="^Arc$" manage=on
 yabai -m rule --add app="^Arc$" space=web
 yabai -m rule --add app=".*Firefox.*" space=web
@@ -72,8 +80,8 @@ yabai -m rule --add app="^Transmission$" space=misc
 yabai -m rule --add app="^Spotify$" space=spotify
 yabai -m rule --add app="^Slack$" space=slack #grid=1:1:0:0:1:1 #manage=off
 yabai -m rule --add app="^Telegram$" space=telegram #grid=1:1:0:0:1:1 #manage=off
-yabai -m rule --add app=".*Teams.*" space=misc #grid=1:1:0:0:1:1 #manage=off
-yabai -m rule --add app=".*zoom.*" space=zoom #grid=1:1:0:0:1:1 #manage=off
+yabai -m rule --add app=".*Teams.*" space=teams #grid=1:1:0:0:1:1 #manage=off
+yabai -m rule --add app=".*zoom.*" space=teams #grid=1:1:0:0:1:1 #manage=off
 yabai -m rule --add app="^.*Tunnel.*$" space=misc
 yabai -m rule --add app="^.*VPN.*$" space=misc
 
