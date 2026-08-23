@@ -10,7 +10,10 @@ return {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    -- 0.1.x is frozen at 0.1.8 (May 2024) and its previewer requires the legacy
+    -- nvim-treesitter modules. master dropped that dependency in favour of
+    -- vim.treesitter.start(), which is what lets us run nvim-treesitter main.
+    branch = 'master',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
