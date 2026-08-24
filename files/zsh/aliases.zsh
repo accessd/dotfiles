@@ -144,3 +144,12 @@ alias fix-yabai='killall Dock; launchctl kickstart -k "gui/${UID}/com.asmvik.yab
 # AI coding agents in yolo mode (skip all permission prompts)
 alias cx='claude --dangerously-skip-permissions'
 alias cy='codex --dangerously-bypass-approvals-and-sandbox'
+
+
+alias chrome-with-debugging='"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+    --remote-debugging-address=127.0.0.1 \
+    --remote-debugging-port=49981 \
+    --user-data-dir="$HOME/.chrome-cdp-49981" \
+    --no-first-run \
+    --no-default-browser-check \
+    "about:blank"'
