@@ -140,3 +140,7 @@ alias fixpush="ga && gcm 'fix' && gp"
 # Restart macOS windowing services when Spaces / fullscreen / wake state gets stuck
 alias fix-sketchybar='killall Dock; launchctl kickstart -k "gui/${UID}/homebrew.mxcl.sketchybar"'
 alias fix-yabai='killall Dock; launchctl kickstart -k "gui/${UID}/com.asmvik.yabai"; launchctl kickstart -k "gui/${UID}/homebrew.mxcl.sketchybar"'
+
+# AI coding agents in yolo mode (skip all permission prompts)
+alias cx='claude --dangerously-skip-permissions'
+alias cy='codex --dangerously-bypass-approvals-and-sandbox'
