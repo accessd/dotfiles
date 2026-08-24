@@ -1,5 +1,6 @@
 [tools]
-go = "1.26.3"
+go = "1.26.6"
+hunk = "latest"
 node = "22"
 "pipx:ufbt" = "latest"
 python = "3.13"
