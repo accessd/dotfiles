@@ -28,8 +28,13 @@
     - name: Create ~/.zsh.after directory
       file: path=~/.zsh.after state=directory
 
-    - name: Copy zsh files to ~/.zsh.after
-      copy: src={{ curdir }}/files/zsh/ dest=~/.zsh.after/ mode=preserve
+    - name: Symlink zsh files into ~/.zsh.after
+      file:
+        src: "{{ item }}"
+        dest: "~/.zsh.after/{{ item | basename }}"
+        state: link
+        force: true
+      with_fileglob: "{{ curdir }}/files/zsh/*.zsh"
 
     # bin directory
     - name: Create ~/bin directory
