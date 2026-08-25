@@ -23,6 +23,16 @@
       ignore_errors: yes
 
     # zsh configuration
+    - name: Clone zsh-z
+      git:
+        repo: https://github.com/agkozak/zsh-z
+        dest: ~/.zsh-z
+        depth: 1
+        force: yes
+
+    - name: Remove stale zsh-z copy in ~/bin
+      file: path=~/bin/zsh-z.plugin.zsh state=absent
+
     - file: src={{ curdir }}/files/zshrc dest=~/.zshrc state=link force=true
 
     - name: Create ~/.zsh.after directory

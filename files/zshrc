@@ -101,10 +101,10 @@ else
 fi
 
 # https://github.com/agkozak/zsh-z
-if [[ -f "$HOME/bin/zsh-z.plugin.zsh" ]]; then
- source "$HOME/bin/zsh-z.plugin.zsh"
-elif command -v zoxide >/dev/null 2>&1; then
- eval "$(zoxide init zsh)"
+# cloned by dotfiles.yml; _zshz must stay next to the plugin, and compinit has to
+# run after this so it sees the fpath entry the plugin adds
+if [[ -f "$HOME/.zsh-z/zsh-z.plugin.zsh" ]]; then
+ source "$HOME/.zsh-z/zsh-z.plugin.zsh"
 fi
 
 autoload -U compinit; compinit
