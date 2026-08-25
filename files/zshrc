@@ -160,3 +160,7 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# atuin from the official installer lives in ~/.atuin; the brew build and
+# machines without atuin have no such file, so guard the source.
+[ -f "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
