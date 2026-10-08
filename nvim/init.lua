@@ -45,6 +45,7 @@ require 'lazy-bootstrap'
 require 'lazy-plugins'
 
 require 'custom.select_and_search'
+require 'custom.openapi_preview'
 
 vim.cmd 'source ~/.config/nvim/vim.vim'
 
