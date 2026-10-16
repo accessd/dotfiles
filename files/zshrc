@@ -8,11 +8,17 @@ fi
 
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
-libpq_prefix=$(brew --prefix libpq 2>/dev/null)
-if [[ -n "$libpq_prefix" ]]; then
- export PATH="$libpq_prefix/bin:$PATH"
+if [[ -r /usr/share/omarchy/default/bash/env-bootstrap ]]; then
+ source /usr/share/omarchy/default/bash/env-bootstrap
 fi
-unset libpq_prefix
+
+if command -v brew >/dev/null 2>&1; then
+ libpq_prefix=$(brew --prefix libpq 2>/dev/null)
+ if [[ -n "$libpq_prefix" ]]; then
+  export PATH="$libpq_prefix/bin:$PATH"
+ fi
+ unset libpq_prefix
+fi
 
 # zmodload zsh/zprof
 
@@ -86,10 +92,16 @@ printf "\e[?1042l"
 # PROMPT='%f%F{43}la%f%F{44}pt%f%F{38}op%f%F{44}:%1~/%f %F{44}%#%f '
 
 # Completion/suggestion plugins: Homebrew ships them share-wide on macOS, on
-# Linux they come from the oh-my-zsh custom plugin dir.
+# Arch Linux packages live under /usr/share; other Linux installs can use OMZ.
 if command -v brew >/dev/null 2>&1; then
  source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
  source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [[ -d /usr/share/zsh/plugins ]]; then
+ [[ -d /usr/share/zsh/site-functions ]] && fpath+=(/usr/share/zsh/site-functions)
+ [[ -r /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] \
+   && source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+ [[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
+   && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 else
  zsh_plugin_dir="${ZSH_CUSTOM:-${ZSH:-$HOME/.oh-my-zsh}/custom}/plugins"
  [[ -d "$zsh_plugin_dir/zsh-completions/src" ]] && fpath+=("$zsh_plugin_dir/zsh-completions/src")

@@ -6,12 +6,46 @@
     git clone git@github.com:accessd/dotfiles.git
     make setup
 
-### Requrements
+### Requirements (macOS)
 
 * macOS
 * zsh
 * git
 * homebrew
+
+### Omarchy
+
+Installs Neovim, tmux, Zsh and Git configs, Arch dependencies, zsh-z, TPM and
+editor plugins. Run as your normal user; package installation uses Omarchy's
+privilege handling.
+
+```bash
+cd ~/dotfiles
+make setup_omarchy
+# Optional: also change the login shell (requests your password)
+./bootstrap-omarchy.sh --change-shell
+```
+
+Configs are symlinked to this checkout. Existing configs and the previous Neovim
+runtime are moved to `~/.local/state/dotfiles/backups/<timestamp>-<pid>/` (respects
+XDG directories). Repeated runs keep correct links and existing plugin clones.
+The previous `~/.config/git/config` is backed up so it cannot override this Git
+setup; machine-specific Git settings belong in `~/.gitconfig.user`.
+
+Use `--skip-packages` or `--skip-plugins` to install configs without those steps.
+Start with `exec zsh`; tmux uses **Ctrl+a**, Neovim uses **comma** as leader.
+Existing tmux sessions are left running; new servers load the config. AI plugins
+require their own authentication; language tools are installed by Mason on first use.
+
+The Omarchy installer also links `files/hypr/input.lua` and
+`files/hypr/bindings.lua` into `~/.config/hypr/`, backing up previous files:
+
+- **Caps Lock** acts as **Ctrl**.
+- Layouts: **English (US)** and **Russian**.
+- Tap **Left Alt** for English; tap **Right Alt** for Russian (on release).
+
+The remaining Hyprland configuration stays managed by Omarchy. When installing
+inside a running Hyprland session, the script reloads and checks its configuration.
 
 ### hal9000
 
