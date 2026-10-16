@@ -47,6 +47,17 @@ The Omarchy installer also links `files/hypr/input.lua` and
 The remaining Hyprland configuration stays managed by Omarchy. When installing
 inside a running Hyprland session, the script reloads and checks its configuration.
 
+### Copy projects from another machine
+
+Run `./sync-projects.sh` to copy `macbook.local:~/projects/` into local
+`~/projects/` over SSH, or pass another SSH host. Requires rsync on both
+machines (modern rsync on the receiving machine). Use `--dry-run` to preview.
+Includes hidden files, `.git`, dependencies and build outputs. Local files are
+never deleted; replaced files are backed up under
+`${XDG_STATE_HOME:-~/.local/state}/projects-sync/<timestamp>-<pid>/`.
+Rerun after an interrupted transfer to continue. This copies files; dependencies
+and binaries built on macOS may need rebuilding on Linux.
+
 ### hal9000
 
 The hal9000 profile installs Codex CLI, Claude Code, Docker Desktop, Chrome,
