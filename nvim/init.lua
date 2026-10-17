@@ -28,6 +28,8 @@ vim.g.have_nerd_font = true
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+-- Explorer plugins clear netrw's group even when netrw was disabled above.
+vim.api.nvim_create_augroup('FileExplorer', { clear = false })
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true

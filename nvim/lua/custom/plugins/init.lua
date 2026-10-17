@@ -2,16 +2,23 @@ return {
   {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
+    dependencies = {
+      {
+        'smart-splits-nvim/backend-tmux',
+        main = 'smart-splits-backend-tmux',
+        opts = { disable_nav_when_zoomed = false },
+      },
+    },
     config = function()
       require('smart-splits').setup {
-        disable_multiplexer_nav_when_zoomed = false,
+        mux = { backend = vim.env.TMUX and 'smart-splits-backend-tmux' or nil },
       }
       -- moving between splits
       vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
       vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
       vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
       vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
-      vim.keymap.set('n', '<C-\\>', require('smart-splits').move_cursor_previous)
+      vim.keymap.set('n', '<C-\\>', '<C-w>p', { desc = 'Previous window' })
       -- swapping buffers between windows
       vim.keymap.set('n', '<leader><leader>h', require('smart-splits').swap_buf_left)
       vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down)

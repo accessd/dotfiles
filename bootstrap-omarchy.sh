@@ -45,7 +45,7 @@ fi
 if "$install_packages"; then
   omarchy pkg add zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting \
     neovim tmux git git-delta ripgrep fd fzf jq wl-clipboard \
-    base-devel cmake curl unzip tree-sitter-cli
+    base-devel cmake curl unzip tree-sitter-cli go
 fi
 
 # Move whole files/directories, including dangling symlinks, without deleting them.

@@ -42,7 +42,8 @@ The Omarchy installer also links `files/hypr/input.lua` and
 
 - **Caps Lock** acts as **Ctrl**.
 - Layouts: **English (US)** and **Russian**.
-- Tap **Left Alt** for English; tap **Right Alt** for Russian (on release).
+- **Left Alt** and **Left Super** are swapped: physical Left Alt runs Super shortcuts.
+- Tap **Super** (physical **Left Alt**) for English; tap **Right Alt** for Russian (on release).
 
 The remaining Hyprland configuration stays managed by Omarchy. When installing
 inside a running Hyprland session, the script reloads and checks its configuration.
