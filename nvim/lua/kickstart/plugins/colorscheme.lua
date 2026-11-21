@@ -38,14 +38,24 @@ return {
   --   end,
   -- },
   {
-    "srt0/codescope.nvim",
+    "pustota-theme/pustota.nvim",
     lazy = false,
     priority = 1000,
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("codescope").setup({
-        transparent = true
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        group = vim.api.nvim_create_augroup("pustota-transparency", { clear = true }),
+        pattern = "pustota",
+        callback = function()
+          for _, group in ipairs({ "Normal", "NormalNC", "NormalFloat", "SignColumn", "EndOfBuffer", "MsgArea" }) do
+            local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+            hl.bg = nil
+            hl.ctermbg = nil
+            vim.api.nvim_set_hl(0, group, hl)
+          end
+        end,
       })
-      vim.cmd.colorscheme("codescope")
+      vim.cmd.colorscheme("pustota")
     end,
   },
   -- {
