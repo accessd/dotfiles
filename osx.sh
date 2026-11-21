@@ -39,6 +39,7 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
 echo "Disable auto-correct"
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write NSGlobalDomain WebAutomaticSpellingCorrectionEnabled -bool false
 
 echo "Disable opening and closing window animations"
 defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
