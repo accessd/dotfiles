@@ -2,16 +2,9 @@ return {
   {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
-    dependencies = {
-      {
-        'smart-splits-nvim/backend-tmux',
-        main = 'smart-splits-backend-tmux',
-        opts = { disable_nav_when_zoomed = false },
-      },
-    },
     config = function()
       require('smart-splits').setup {
-        mux = { backend = vim.env.TMUX and 'smart-splits-backend-tmux' or nil },
+        disable_multiplexer_nav_when_zoomed = false,
       }
       -- moving between splits
       vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
